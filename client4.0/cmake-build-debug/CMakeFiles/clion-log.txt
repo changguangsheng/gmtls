@@ -1,0 +1,13 @@
+/home/cgs/clion-2021.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - Unix Makefiles" "/home/cgs/src/Gmssl/client 4.0"
+-- The CXX compiler identification is unknown
+CMake Error at CMakeLists.txt:2 (project):
+  No CMAKE_CXX_COMPILER could be found.
+
+  Tell CMake where to find the compiler by setting either the environment
+  variable "CXX" or the CMake cache entry CMAKE_CXX_COMPILER to the full path
+  to the compiler, or to the compiler name if it is in the PATH.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/cgs/src/Gmssl/client 4.0/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "/home/cgs/src/Gmssl/client 4.0/cmake-build-debug/CMakeFiles/CMakeError.log".
