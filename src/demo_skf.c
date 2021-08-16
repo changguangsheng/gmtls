@@ -79,7 +79,7 @@ int main()
     BYTE c;
 
     SKFE_IssueCard();
-
+    //get some software & hardware version
     get_hw_sw_info();
 
     RETRY:

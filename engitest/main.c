@@ -1,18 +1,5 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include "CommonType.h"
-#include "skf.h"
-#include "dev_manage_funs.h"
-#include "dev_control_funs.h"
-#include "dev_application_funs.h"
-#include "dev_container_funs.h"
-#include "dev_file_funs.h"
-#include "dev_sym_hash_funs.h"
-#include "dev_ecc_funs.h"
-#include "dev_rsa_funs.h"
-#include "alg_performances.h"
-#include "dev_skf_expand_interface.h"
-#include "test_update_firmware.h"
 
 
 int main()
@@ -26,10 +13,10 @@ int main()
 
     test_all_skf();
 
-    
+
 #ifndef LINUX
     system("pause");
-#endif 
+#endif
     return 0;
 }
 
