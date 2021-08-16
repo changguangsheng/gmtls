@@ -5,7 +5,7 @@
 #include "cipher.h"
 #include "engine.h"
 
-const char *engine_id = "libgmssl_engine";
+const char *engine_id = "skf_engine";
 const char *engine_name = "Reference implementation of gmssl crypto engine";
 
 #define GMSSL_CMD_INIT_ENGINE (ENGINE_CMD_BASE)

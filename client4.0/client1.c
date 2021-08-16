@@ -24,9 +24,6 @@ int config_ssl_stc(SSL_CTX *ctx){
     if(ret < 0){
         printf("SSL_CTX_load_verify_locations failed.");
     }
-
-    SSL_CTX_set_default_passwd_cb_userdata(ctx ,"12345678");
-
     return 0;
 
 }
@@ -144,7 +141,6 @@ finish:
     SSL_free(ssl);
     close(sockfd);
     SSL_CTX_free(ctx);
-
     return 0;
 }
 
