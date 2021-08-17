@@ -3,7 +3,12 @@
 #include "skf.h"
 #include "CommonType.h"
 #include "dev_manage_funs.h"
-//#include ""
+#include "dev_control_funs.h"
+#include "dev_application_funs.h"
+#include "dev_file_funs.h"
+#include "dev_container_funs.h"
+
+
 
 
 void PrintMsg( char *fmt, ... )
@@ -40,30 +45,41 @@ void test_all_skf(){
         PrintMsg("%d",i+1);
         PrintMsg(" test******************************/\n");
         PrintMsg("===============================\n");
+        PrintMsg("设备管理接口");
+        //        设备管理接口
+        //        获取设备信息
         dev_manage_funs_test();
         PrintMsg("===============================\n\n");
         PrintMsg("===============================\n");
+        PrintMsg("被认证方使用认证密钥、设备认证算法 对bRandom加密 获取认证数据bAuthData过程");
         dev_control_funs_test();
         PrintMsg("===============================\n\n");
         PrintMsg("===============================\n");
+        PrintMsg("创建应用");
         dev_appliction_funs_test();
         PrintMsg("===============================\n\n");
         PrintMsg("===============================\n");
+        PrintMsg("操作文件/容器");
         dev_file_funs_test();
         PrintMsg("===============================\n\n");
         PrintMsg("===============================\n");
+        PrintMsg("创建容器");
         dev_container_funs_test();
         PrintMsg("===============================\n\n");
         PrintMsg("===============================\n");
+        PrintMsg("对称算法加解密");
         dev_sym_hash_funs_test();
         PrintMsg("===============================\n\n");
         PrintMsg("===============================\n");
+        PrintMsg("ECC接口");
         dev_ecc_funs_test();
         PrintMsg("===============================\n\n");
         PrintMsg("===============================\n");
+        PrintMsg("rsa 接口")
         dev_rsa_funs_test();
         PrintMsg("===============================\n\n");
         /*PrintMsg("===============================\n");
+         *
         alg_performances_test();
         PrintMsg("===============================\n\n");*/
 

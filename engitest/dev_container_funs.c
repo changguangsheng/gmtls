@@ -1,5 +1,5 @@
 
-/* ÈİÆ÷½Ó¿Ú */
+/* å®¹å™¨æ¥å£ */
 
 #include <stdio.h>
 #include "CommonType.h"
@@ -10,106 +10,106 @@
 
 void dev_container_funs_test()
 {
-	ULONG rv = 0;
-	char* szContainerName = "Test_Container";
-	char szContainerNameList[256] = {0};
-	ULONG ulNameListSize = 256;
-	ULONG ulContainerType = 0;
-	BYTE bCerText[2048] = {0};
-	ULONG ulCerTextLen = 0;
-	BOOL bSignflag = FALSE;
+    ULONG rv = 0;
+    char* szContainerName = "Test_Container";
+    char szContainerNameList[256] = {0};
+    ULONG ulNameListSize = 256;
+    ULONG ulContainerType = 0;
+    BYTE bCerText[2048] = {0};
+    ULONG ulCerTextLen = 0;
+    BOOL bSignflag = FALSE;
 
-	SKF_DeleteContainer(hApplication, "Test_Container");
-	// ´´½¨ÈİÆ÷
-	// ´«Èë´´½¨µÄÈİÆ÷Ãû³ÆTest_Container, ´´½¨³É¹¦µÃµ½ÈİÆ÷¾ä±úhContainer
-	// ÈİÆ÷Ãû³Æ³¤¶ÈĞ¡ÓÚ64×Ö½Ú, ²»ÄÜ´´½¨Ãû×ÖÏàÍ¬µÄÈİÆ÷,Ãû×Ö²»ÄÜÎª""
-	rv = SKF_CreateContainer(hApplication, "Test_Container", &hContainer);
-	if (rv != SAR_OK || hContainer == NULL)
-	{
-		PrintMsg("SKF_CreateContainer Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_CreateContainer OK\n");
-	rv = SKF_CloseContainer(hContainer);
+    SKF_DeleteContainer(hApplication, "Test_Container");
+    // åˆ›å»ºå®¹å™¨
+    // ä¼ å…¥åˆ›å»ºçš„å®¹å™¨åç§°Test_Container, åˆ›å»ºæˆåŠŸå¾—åˆ°å®¹å™¨å¥æŸ„hContainer
+    // å®¹å™¨åç§°é•¿åº¦å°äº64å­—èŠ‚, ä¸èƒ½åˆ›å»ºåå­—ç›¸åŒçš„å®¹å™¨,åå­—ä¸èƒ½ä¸º""
+    rv = SKF_CreateContainer(hApplication, "Test_Container", &hContainer);
+    if (rv != SAR_OK || hContainer == NULL)
+    {
+        PrintMsg("SKF_CreateContainer Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_CreateContainer OK\n");
+    rv = SKF_CloseContainer(hContainer);
 
-	// Ã¶¾ÙÈİÆ÷
-	// Ã¶¾Ù³öÓ¦ÓÃÖĞµÄËùÓĞÈİÆ÷,ÈİÆ÷Ãû³ÆÒÔ'\0'·Ö¸î,ulNameListSizeÎªËùÓĞÃû³ÆËùÕ¼¿Õ¼ä´óĞ¡
-	rv = SKF_EnumContainer(hApplication, szContainerNameList, &ulNameListSize);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_EnumContainer Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_EnumContainer OK\n");
+    // æšä¸¾å®¹å™¨
+    // æšä¸¾å‡ºåº”ç”¨ä¸­çš„æ‰€æœ‰å®¹å™¨,å®¹å™¨åç§°ä»¥'\0'åˆ†å‰²,ulNameListSizeä¸ºæ‰€æœ‰åç§°æ‰€å ç©ºé—´å¤§å°
+    rv = SKF_EnumContainer(hApplication, szContainerNameList, &ulNameListSize);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_EnumContainer Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_EnumContainer OK\n");
 
-	// ´ò¿ªÈİÆ÷
-	// ´ò¿ªÃû³ÆÎªszContainerNameµÄÓ¦ÓÃ£¬Èç¹ûÓ¦ÓÃ´æÔÚ´ò¿ª³É¹¦»ñµÃÈİÆ÷¾ä±ú,²»´æÔÚÔò´ò¿ªÊ§°Ü
-	rv = SKF_OpenContainer(hApplication, szContainerName, &hContainer);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_OpenContainer Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_OpenContainer OK\n");
+    // æ‰“å¼€å®¹å™¨
+    // æ‰“å¼€åç§°ä¸ºszContainerNameçš„åº”ç”¨ï¼Œå¦‚æœåº”ç”¨å­˜åœ¨æ‰“å¼€æˆåŠŸè·å¾—å®¹å™¨å¥æŸ„,ä¸å­˜åœ¨åˆ™æ‰“å¼€å¤±è´¥
+    rv = SKF_OpenContainer(hApplication, szContainerName, &hContainer);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_OpenContainer Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_OpenContainer OK\n");
 
 
-	// »ñÈ¡ÈİÆ÷ÀàĞÍ
-	// ulContainerType·µ»Øµ±Ç°ÈİÆ÷ÀàĞÍ, 0-ÉĞÎ´·ÖÅäÀàĞÍ»ò¿ÕÈİÆ÷/1-RSAÈİÆ÷/2-ECCÈİÆ÷
-	// ÈİÆ÷ÀàĞÍÔÚ ÈİÆ÷ÖĞµ¼Èë/Éú³ÉRSA(ECC)Ç©ÃûÃÜÔ¿¶ÔÖ®ºó,·¢Éú¸Ä±ä
-	rv = SKF_GetContainerType(hContainer, &ulContainerType);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_GetContainerType Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_GetContainerType[%u] OK\n", ulContainerType);
+    // è·å–å®¹å™¨ç±»å‹
+    // ulContainerTypeè¿”å›å½“å‰å®¹å™¨ç±»å‹, 0-å°šæœªåˆ†é…ç±»å‹æˆ–ç©ºå®¹å™¨/1-RSAå®¹å™¨/2-ECCå®¹å™¨
+    // å®¹å™¨ç±»å‹åœ¨ å®¹å™¨ä¸­å¯¼å…¥/ç”ŸæˆRSA(ECC)ç­¾åå¯†é’¥å¯¹ä¹‹å,å‘ç”Ÿæ”¹å˜
+    rv = SKF_GetContainerType(hContainer, &ulContainerType);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_GetContainerType Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_GetContainerType[%u] OK\n", ulContainerType);
 
-	// µ¼Èë/µ¼³öÊı×ÖÖ¤Êé
-	// bSignflagÎªFALSEÊ±Ö¤ÊéÎª¼ÓÃÜÖ¤Êé, TRUEÊ±ÎªÇ©ÃûÖ¤Êé, Ö¤Êé×î´ó³¤¶ÈÎª2044×Ö½Ú¡£
-	ulCerTextLen = 1024;    //Ö¤Êé³¤¶È´óĞ¡£¬¼ÙÉèÖ¤Êé³¤¶ÈÊÇ1024×Ö½Ú
-	memset(bCerText, 0x02, ulCerTextLen);
-	rv = SKF_ImportCertificate(hContainer, bSignflag, bCerText, ulCerTextLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ImportCertificate Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_ImportCertificate OK\n");
+    // å¯¼å…¥/å¯¼å‡ºæ•°å­—è¯ä¹¦
+    // bSignflagä¸ºFALSEæ—¶è¯ä¹¦ä¸ºåŠ å¯†è¯ä¹¦, TRUEæ—¶ä¸ºç­¾åè¯ä¹¦, è¯ä¹¦æœ€å¤§é•¿åº¦ä¸º2044å­—èŠ‚ã€‚
+    ulCerTextLen = 1024;    //è¯ä¹¦é•¿åº¦å¤§å°ï¼Œå‡è®¾è¯ä¹¦é•¿åº¦æ˜¯1024å­—èŠ‚
+    memset(bCerText, 0x02, ulCerTextLen);
+    rv = SKF_ImportCertificate(hContainer, bSignflag, bCerText, ulCerTextLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ImportCertificate Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_ImportCertificate OK\n");
 
-	memset(bCerText, 0x00, ulCerTextLen);
-	rv = SKF_ExportCertificate(hContainer, bSignflag, bCerText, &ulCerTextLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ExportCertificate Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_ExportCertificate OK\n");
+    memset(bCerText, 0x00, ulCerTextLen);
+    rv = SKF_ExportCertificate(hContainer, bSignflag, bCerText, &ulCerTextLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ExportCertificate Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_ExportCertificate OK\n");
 
-	// ¹Ø±ÕÈİÆ÷
-	// ¹Ø±Õ¾ä±úÎªhContainerµÄÈİÆ÷, ¹Ø±ÕºóhContainerÎŞĞ§
-	rv = SKF_CloseContainer(hContainer);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_CloseContainer Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_CloseContainer OK\n");
+    // å…³é—­å®¹å™¨
+    // å…³é—­å¥æŸ„ä¸ºhContainerçš„å®¹å™¨, å…³é—­åhContaineræ— æ•ˆ
+    rv = SKF_CloseContainer(hContainer);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_CloseContainer Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_CloseContainer OK\n");
 
-	// É¾³ıÈİÆ÷
-	rv = SKF_DeleteContainer(hApplication, "ContainerName");
-	PrintMsg("SKF_DeleteContainer OK\n");
+    // åˆ é™¤å®¹å™¨
+    rv = SKF_DeleteContainer(hApplication, "ContainerName");
+    PrintMsg("SKF_DeleteContainer OK\n");
 }

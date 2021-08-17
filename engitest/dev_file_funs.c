@@ -1,5 +1,5 @@
 
-/* ÎÄ¼ş½Ó¿Ú */
+/* æ–‡ä»¶æ¥å£ */
 
 #include <stdio.h>
 #include "CommonType.h"
@@ -10,91 +10,91 @@
 
 void dev_file_funs_test()
 {
-	ULONG rv = 0, ulRetryCounter = 0;
-	ULONG ulFileSize = 0x100;
-	char szFileList[256] = {0};
-	ULONG ulFileListSize = 256;
-	FILEATTRIBUTE FileInfo;
-	BYTE bData[0x100] = {0};
-	ULONG ulDataSize = 0x100, ulOffset = 0;
+    ULONG rv = 0, ulRetryCounter = 0;
+    ULONG ulFileSize = 0x100;
+    char szFileList[256] = {0};
+    ULONG ulFileListSize = 256;
+    FILEATTRIBUTE FileInfo;
+    BYTE bData[0x100] = {0};
+    ULONG ulDataSize = 0x100, ulOffset = 0;
 
-	// ²Ù×÷ÎÄ¼ş/ÈİÆ÷ĞèÒªÏÈµÇÂ¼Ó¦ÓÃ
-	rv = SKF_OpenApplication(hDev, "Test_Application", &hApplication);
-	rv = SKF_VerifyPIN(hApplication, USER_TYPE, "654321" ,&ulRetryCounter);
+    // æ“ä½œæ–‡ä»¶/å®¹å™¨éœ€è¦å…ˆç™»å½•åº”ç”¨
+    rv = SKF_OpenApplication(hDev, "Test_Application", &hApplication);
+    rv = SKF_VerifyPIN(hApplication, USER_TYPE, "654321" ,&ulRetryCounter);
 
-	// ´´½¨ÎÄ¼ş
-	// Test_FileÎªÎÄ¼şÃû, ³¤¶ÈĞ¡ÓÚ32×Ö½Ú;  ulFileSizeÎªÎÄ¼ş´óĞ¡,  ¸ÃÃû³ÆµÄÎÄ¼ş´æÔÚÊ±´´½¨Ê§°Ü
-	// SECURE_ANYONE_ACCOUNT´¦²ÎÊıÎª ÎÄ¼ş¶ÁÈ¨ÏŞ,SECURE_ANYONE_ACCOUNTÈÎºÎÈË¿É¶Á/SECURE_ADM_ACCOUNTÖ»¹ÜÀíÔ±¿É¶Á/SECURE_USER_ACCOUNTÖ»ÓÃ»§¿É¶Á
-	// SECURE_USER_ACCOUNT´¦²ÎÊıÎª ÎÄ¼şĞ´È¨ÏŞ, SECURE_ANYONE_ACCOUNTÈÎºÎÈË¿ÉĞ´/SECURE_ADM_ACCOUNTÖ»¹ÜÀíÔ±¿ÉĞ´/SECURE_USER_ACCOUNTÖ»ÓÃ»§¿ÉĞ´
-	rv = SKF_CreateFile(hApplication, "Test_File", ulFileSize, SECURE_ANYONE_ACCOUNT, SECURE_USER_ACCOUNT);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_CreateFile Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_CreateFile OK\n");
+    // åˆ›å»ºæ–‡ä»¶
+    // Test_Fileä¸ºæ–‡ä»¶å, é•¿åº¦å°äº32å­—èŠ‚;  ulFileSizeä¸ºæ–‡ä»¶å¤§å°,  è¯¥åç§°çš„æ–‡ä»¶å­˜åœ¨æ—¶åˆ›å»ºå¤±è´¥
+    // SECURE_ANYONE_ACCOUNTå¤„å‚æ•°ä¸º æ–‡ä»¶è¯»æƒé™,SECURE_ANYONE_ACCOUNTä»»ä½•äººå¯è¯»/SECURE_ADM_ACCOUNTåªç®¡ç†å‘˜å¯è¯»/SECURE_USER_ACCOUNTåªç”¨æˆ·å¯è¯»
+    // SECURE_USER_ACCOUNTå¤„å‚æ•°ä¸º æ–‡ä»¶å†™æƒé™, SECURE_ANYONE_ACCOUNTä»»ä½•äººå¯å†™/SECURE_ADM_ACCOUNTåªç®¡ç†å‘˜å¯å†™/SECURE_USER_ACCOUNTåªç”¨æˆ·å¯å†™
+    rv = SKF_CreateFile(hApplication, "Test_File", ulFileSize, SECURE_ANYONE_ACCOUNT, SECURE_USER_ACCOUNT);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_CreateFile Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_CreateFile OK\n");
 
-	// Ã¶¾ÙÎÄ¼ş
-	// Ã¶¾Ù³öÓ¦ÓÃÖĞµÄËùÓĞÎÄ¼ş,ÎÄ¼şÃû³ÆÒÔ'\0'·Ö¸î,ulFileListSizeÎªËùÓĞÃû³ÆËùÕ¼¿Õ¼ä´óĞ¡
-	rv = SKF_EnumFiles(hApplication, szFileList, &ulFileListSize);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_EnumFiles Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_EnumFiles OK\n");
+    // æšä¸¾æ–‡ä»¶
+    // æšä¸¾å‡ºåº”ç”¨ä¸­çš„æ‰€æœ‰æ–‡ä»¶,æ–‡ä»¶åç§°ä»¥'\0'åˆ†å‰²,ulFileListSizeä¸ºæ‰€æœ‰åç§°æ‰€å ç©ºé—´å¤§å°
+    rv = SKF_EnumFiles(hApplication, szFileList, &ulFileListSize);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_EnumFiles Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_EnumFiles OK\n");
 
-	// »ñÈ¡ÎÄ¼şĞÅÏ¢
-	// FileInfoÎª´æ·ÅÎÄ¼şĞÅÏ¢µÄ½á¹¹Ìå, ÆäÖĞ°üº¬ÎÄ¼şÃû³Æ¡¢´óĞ¡¡¢¶ÁĞ´È¨ÏŞ
-	memset(&FileInfo, 0,sizeof(FILEATTRIBUTE));
-	rv = SKF_GetFileInfo(hApplication, "Test_File", &FileInfo);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_GetFileInfo Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_GetFileInfo OK\n");
+    // è·å–æ–‡ä»¶ä¿¡æ¯
+    // FileInfoä¸ºå­˜æ”¾æ–‡ä»¶ä¿¡æ¯çš„ç»“æ„ä½“, å…¶ä¸­åŒ…å«æ–‡ä»¶åç§°ã€å¤§å°ã€è¯»å†™æƒé™
+    memset(&FileInfo, 0,sizeof(FILEATTRIBUTE));
+    rv = SKF_GetFileInfo(hApplication, "Test_File", &FileInfo);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_GetFileInfo Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_GetFileInfo OK\n");
 
-	// Ğ´ÎÄ¼ş
-	// ÏòÃû×ÖÎªTest_FileµÄÎÄ¼şÖĞĞ´ÈëulDataSize³¤¶ÈbDataÊı¾İ,ulOffsetÎªĞ´ÈëÎÄ¼şÎ»ÖÃµÄÆ«ÒÆÁ¿
-	memset(bData, 0x22, 0x100);
-	rv = SKF_WriteFile(hApplication, "Test_File", ulOffset, bData, ulDataSize);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_WriteFile Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_WriteFile OK\n");
+    // å†™æ–‡ä»¶
+    // å‘åå­—ä¸ºTest_Fileçš„æ–‡ä»¶ä¸­å†™å…¥ulDataSizeé•¿åº¦bDataæ•°æ®,ulOffsetä¸ºå†™å…¥æ–‡ä»¶ä½ç½®çš„åç§»é‡
+    memset(bData, 0x22, 0x100);
+    rv = SKF_WriteFile(hApplication, "Test_File", ulOffset, bData, ulDataSize);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_WriteFile Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_WriteFile OK\n");
 
-	// ¶ÁÎÄ¼ş
-	// ´ÓÎÄ¼şulOffsetÆ«ÒÆ´¦¶ÁÈ¡ulDataSize³¤¶ÈµÄÊı¾İµ½bData, ×îºó²ÎÊıulDataSize±íÊ¾Êµ¼Ê¶ÁÈ¡µ½µÄ³¤¶È
-	memset(bData, 0x00, 0x100);
-	rv = SKF_ReadFile(hApplication, "Test_File", ulOffset, ulDataSize, bData, &ulDataSize);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ReadFile Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_ReadFile OK\n");
+    // è¯»æ–‡ä»¶
+    // ä»æ–‡ä»¶ulOffsetåç§»å¤„è¯»å–ulDataSizeé•¿åº¦çš„æ•°æ®åˆ°bData, æœ€åå‚æ•°ulDataSizeè¡¨ç¤ºå®é™…è¯»å–åˆ°çš„é•¿åº¦
+    memset(bData, 0x00, 0x100);
+    rv = SKF_ReadFile(hApplication, "Test_File", ulOffset, ulDataSize, bData, &ulDataSize);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ReadFile Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_ReadFile OK\n");
 
-	// É¾³ıÎÄ¼ş
-	rv = SKF_DeleteFile(hApplication, "Test_File");
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_DeleteFile Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_DeleteFile OK\n");
+    // åˆ é™¤æ–‡ä»¶
+    rv = SKF_DeleteFile(hApplication, "Test_File");
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_DeleteFile Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_DeleteFile OK\n");
 }

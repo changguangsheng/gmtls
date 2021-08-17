@@ -7,220 +7,220 @@
 
 void dev_sym_hash_funs_test()
 {
-	ULONG rv = 0;
+    ULONG rv = 0;
 	
-	HANDLE hKey = NULL;
-	BYTE bKeyValue[32] = {0x37,0xB7,0xE3,0x25,0x9C,0x36,0xE3,0x8E,0xC3,0xA5,0x85,0x86,0x10,0xb5,0xb0,0x7a};
-	BYTE bIVValue[32] = {0x37,0xE3,0xA5,0x25,0xE3,0x8E,0xC3,0x85,0x86,0x9C,0x10,0xb5,0x36,0xb0,0x7a,0xB7};
-	ULONG ulAlgID = 0;
-	BLOCKCIPHERPARAM EncryptParam;
-	BYTE* bIndata = NULL, *bOutData = NULL, *bUpdateOut = NULL, *bFinalOut = NULL;
-	ULONG ulIndataLen = 0, ulOutdataLen = 0, ulUpdateOutLen = 0, ulFinalOutLen = 0;
+    HANDLE hKey = NULL;
+    BYTE bKeyValue[32] = {0x37,0xB7,0xE3,0x25,0x9C,0x36,0xE3,0x8E,0xC3,0xA5,0x85,0x86,0x10,0xb5,0xb0,0x7a};
+    BYTE bIVValue[32] = {0x37,0xE3,0xA5,0x25,0xE3,0x8E,0xC3,0x85,0x86,0x9C,0x10,0xb5,0x36,0xb0,0x7a,0xB7};
+    ULONG ulAlgID = 0;
+    BLOCKCIPHERPARAM EncryptParam;
+    BYTE* bIndata = NULL, *bOutData = NULL, *bUpdateOut = NULL, *bFinalOut = NULL;
+    ULONG ulIndataLen = 0, ulOutdataLen = 0, ulUpdateOutLen = 0, ulFinalOutLen = 0;
 
-	HANDLE hHash = NULL;
+    HANDLE hHash = NULL;
 
-	// ************************************************
-	// **************** ¶Ô³ÆËã·¨¼Ó½âÃÜ ****************
-	// ************************************************
-	/*==> 
-	¶Ô³ÆËã·¨¼Ó½âÃÜ½Ó¿ÚÊ¹ÓÃÁ÷³Ì: 
-	   SKF_SetSymmKeyÃ÷ÎÄµ¼Èë»á»°ÃÜÔ¿(¼Ó½âÃÜÊ¹ÓÃÃÜÔ¿) 
-			==> SKF_EncryptInit/SKF_DecryptInit¼Ó½âÃÜ³õÊ¼»¯(ÉèÖÃ³õÊ¼IV¡¢ÊÇ·ñ¶ÔÃ÷ÎÄÊı¾İÌî³ä)
-			==> SKF_Encrypt(SKF_EncryptUpdate + SKF_EncryptFinal) / SKF_Decrypt(SKF_DecryptUpdate + SKF_DecryptFinal)¶ÔÊı¾İ¼Ó½âÃÜ,µÃµ½¼Ó½âÃÜ½á¹û
+    // ************************************************
+    // **************** å¯¹ç§°ç®—æ³•åŠ è§£å¯† ****************
+    // ************************************************
+    /*==>
+	å¯¹ç§°ç®—æ³•åŠ è§£å¯†æ¥å£ä½¿ç”¨æµç¨‹:
+	   SKF_SetSymmKeyæ˜æ–‡å¯¼å…¥ä¼šè¯å¯†é’¥(åŠ è§£å¯†ä½¿ç”¨å¯†é’¥)
+			==> SKF_EncryptInit/SKF_DecryptInitåŠ è§£å¯†åˆå§‹åŒ–(è®¾ç½®åˆå§‹IVã€æ˜¯å¦å¯¹æ˜æ–‡æ•°æ®å¡«å……)
+			==> SKF_Encrypt(SKF_EncryptUpdate + SKF_EncryptFinal) / SKF_Decrypt(SKF_DecryptUpdate + SKF_DecryptFinal)å¯¹æ•°æ®åŠ è§£å¯†,å¾—åˆ°åŠ è§£å¯†ç»“æœ
 	<==*/
-	
-	// Ã÷ÎÄµ¼Èë»á»°ÃÜÔ¿		
-	// bKeyValueÎªÔËËãÓÃµ½µÄÃÜÔ¿  ulAlgIDÎª¼Ó½âÃÜÔËËãµÄËã·¨±êÊ¶  
-	//		SGD_SM1_ECB/SGD_SM1_CBC/SGD_SM1_CFB/SGD_SM1_OFB/SGD_SMS4_ECB.../SGD_AES_ECB../SGD_3DES_ECB/
-	ulAlgID = SGD_SM1_ECB;
-	rv = SKF_SetSymmKey(hDev, bKeyValue, ulAlgID, &hKey);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_SetSymmKey Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_SetSymmKey OK\n");
 
-	// ¼ÓÃÜ/½âÃÜ ³õÊ¼»¯
-	// BLOCKCIPHERPARAM Îª³õÊ¼»¯Êı¾İ½á¹¹
-	/* BLOCKCIPHERPARAM ½á¹¹³ÉÔ±ËµÃ÷
+    // æ˜æ–‡å¯¼å…¥ä¼šè¯å¯†é’¥
+    // bKeyValueä¸ºè¿ç®—ç”¨åˆ°çš„å¯†é’¥  ulAlgIDä¸ºåŠ è§£å¯†è¿ç®—çš„ç®—æ³•æ ‡è¯†
+    //		SGD_SM1_ECB/SGD_SM1_CBC/SGD_SM1_CFB/SGD_SM1_OFB/SGD_SMS4_ECB.../SGD_AES_ECB../SGD_3DES_ECB/
+    ulAlgID = SGD_SM1_ECB;
+    rv = SKF_SetSymmKey(hDev, bKeyValue, ulAlgID, &hKey);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_SetSymmKey Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_SetSymmKey OK\n");
+
+    // åŠ å¯†/è§£å¯† åˆå§‹åŒ–
+    // BLOCKCIPHERPARAM ä¸ºåˆå§‹åŒ–æ•°æ®ç»“æ„
+    /* BLOCKCIPHERPARAM ç»“æ„æˆå‘˜è¯´æ˜
 	typedef struct Struct_BLOCKCIPHERPARAM{
-		BYTE IV[MAX_IV_LEN];	// IV	
-		ULONG IVLen;			// IV³¤¶È	ECBÄ£Ê½Îª0  ĞèÒªIVÊ±ÉèÖÃ¶ÔÓ¦IV³¤¶È
-		ULONG PaddingType;		// ÊÇ·ñĞèÒªÈí¼ş¶Ô´ı¼ÓÃÜ(´ı½âÃÜ)Êı¾İ×öÊı¾İÌî³ä
-		ULONG FeedBitLen;		// Ô¤Áô,Ä¿Ç°¿ÉÒÔºöÂÔ
+		BYTE IV[MAX_IV_LEN];	// IV
+		ULONG IVLen;			// IVé•¿åº¦	ECBæ¨¡å¼ä¸º0  éœ€è¦IVæ—¶è®¾ç½®å¯¹åº”IVé•¿åº¦
+		ULONG PaddingType;		// æ˜¯å¦éœ€è¦è½¯ä»¶å¯¹å¾…åŠ å¯†(å¾…è§£å¯†)æ•°æ®åšæ•°æ®å¡«å……
+		ULONG FeedBitLen;		// é¢„ç•™,ç›®å‰å¯ä»¥å¿½ç•¥
 	} BLOCKCIPHERPARAM, *PBLOCKCIPHERPARAM;
 	*/
-	EncryptParam.PaddingType = 0;	
-	EncryptParam.IVLen = 0;
-	memset(EncryptParam.IV ,0,32);
-	rv = SKF_EncryptInit(hKey, EncryptParam);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_EncryptInit Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_EncryptInit OK\n");
+    EncryptParam.PaddingType = 0;
+    EncryptParam.IVLen = 0;
+    memset(EncryptParam.IV ,0,32);
+    rv = SKF_EncryptInit(hKey, EncryptParam);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_EncryptInit Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_EncryptInit OK\n");
 
-	// ¼ÓÃÜ/½âÃÜ	¼Ó½âÃÜÊ¹ÓÃÖ®Ç°±ØĞë »ñµÃÁËhKey»á»°ÃÜÔ¿¾ä±ú SKF_EncryptInit³õÊ¼»¯ 
-	// µ¥×éÊı¾İ¼Ó½âÃÜ: bIndataÎª´ı¼ÓÃÜÊı¾İ,ulIndataLenÎª´ı¼ÓÃÜÊı¾İ³¤¶È, bOutDataÎª·µ»ØµÄÃÜÎÄÊı¾İ,ulOutdataLenÎªÃÜÎÄÊı¾İ³¤¶È
-	//				   bOutDataÎªNULLÊ±,»ñÈ¡ĞèÒª×îÉÙ´æ´¢ÃÜÎÄÊı¾İµÄbuffer¿Õ¼ä´óĞ¡
-	ulIndataLen = 1024;	
-	bIndata = (BYTE*)malloc(ulIndataLen + 1);
-	if (bIndata == NULL)
-	{
-		PrintMsg("malloc wrong !");
-		return ;
-	}
-	memset(bIndata, 0x22, ulIndataLen + 1);
-	bOutData = (BYTE*)malloc(ulIndataLen + 1);
-	if (bOutData == NULL)
-	{
-		PrintMsg("malloc wrong !");
-		return ;
-	}
-	rv = SKF_Encrypt(hKey, bIndata, ulIndataLen, NULL, &ulOutdataLen);
-	rv = SKF_Encrypt(hKey, bIndata, ulIndataLen, bOutData, &ulOutdataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_Encrypt Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_Encrypt OK\n");
-	rv = SKF_CloseHandle(hKey);
-	// ¶à×éÊı¾İ¼ÓÃÜ: SKF_EncryptUpdateÓëSKF_EncryptFinal±ØĞëÒ»ÆğÊ¹ÓÃ
-	rv = SKF_SetSymmKey(hDev, bKeyValue, ulAlgID, &hKey);
-	rv = SKF_EncryptInit(hKey, EncryptParam);
-	rv = SKF_EncryptUpdate(hKey, bIndata, ulIndataLen, NULL, &ulUpdateOutLen);
-	bUpdateOut = (BYTE*)malloc(ulUpdateOutLen + 1);
-	if (bUpdateOut == NULL)
-	{
-		PrintMsg("malloc wrong !");
-		return ;
-	}
-	rv = SKF_EncryptUpdate(hKey, bIndata, ulIndataLen, bUpdateOut, &ulUpdateOutLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_EncryptUpdate Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_EncryptUpdate OK\n");
-	rv = SKF_EncryptFinal(hKey, NULL, &ulFinalOutLen);
-	bFinalOut = (BYTE*)malloc(ulUpdateOutLen + 1);
-	if (bFinalOut == NULL)
-	{
-		PrintMsg("malloc wrong !");
-		return ;
-	}
-	rv = SKF_EncryptFinal(hKey, bFinalOut, &ulFinalOutLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_EncryptFinal Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_EncryptFinal OK\n");
-	rv = SKF_CloseHandle(hKey);
-	// ¶à×éÊı¾İ¼ÓÃÜ½á¹ûÓÉ bUpdateOut||bFinalOut ¹¹³É
-	memset(bOutData, 0x00, ulIndataLen);
-	memcpy(bOutData, bUpdateOut, ulUpdateOutLen);
-	memcpy(bOutData + ulUpdateOutLen, bFinalOut, ulFinalOutLen);
+    // åŠ å¯†/è§£å¯†	åŠ è§£å¯†ä½¿ç”¨ä¹‹å‰å¿…é¡» è·å¾—äº†hKeyä¼šè¯å¯†é’¥å¥æŸ„ SKF_EncryptInitåˆå§‹åŒ–
+    // å•ç»„æ•°æ®åŠ è§£å¯†: bIndataä¸ºå¾…åŠ å¯†æ•°æ®,ulIndataLenä¸ºå¾…åŠ å¯†æ•°æ®é•¿åº¦, bOutDataä¸ºè¿”å›çš„å¯†æ–‡æ•°æ®,ulOutdataLenä¸ºå¯†æ–‡æ•°æ®é•¿åº¦
+    //				   bOutDataä¸ºNULLæ—¶,è·å–éœ€è¦æœ€å°‘å­˜å‚¨å¯†æ–‡æ•°æ®çš„bufferç©ºé—´å¤§å°
+    ulIndataLen = 1024;
+    bIndata = (BYTE*)malloc(ulIndataLen + 1);
+    if (bIndata == NULL)
+    {
+        PrintMsg("malloc wrong !");
+        return ;
+    }
+    memset(bIndata, 0x22, ulIndataLen + 1);
+    bOutData = (BYTE*)malloc(ulIndataLen + 1);
+    if (bOutData == NULL)
+    {
+        PrintMsg("malloc wrong !");
+        return ;
+    }
+    rv = SKF_Encrypt(hKey, bIndata, ulIndataLen, NULL, &ulOutdataLen);
+    rv = SKF_Encrypt(hKey, bIndata, ulIndataLen, bOutData, &ulOutdataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_Encrypt Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_Encrypt OK\n");
+    rv = SKF_CloseHandle(hKey);
+    // å¤šç»„æ•°æ®åŠ å¯†: SKF_EncryptUpdateä¸SKF_EncryptFinalå¿…é¡»ä¸€èµ·ä½¿ç”¨
+    rv = SKF_SetSymmKey(hDev, bKeyValue, ulAlgID, &hKey);
+    rv = SKF_EncryptInit(hKey, EncryptParam);
+    rv = SKF_EncryptUpdate(hKey, bIndata, ulIndataLen, NULL, &ulUpdateOutLen);
+    bUpdateOut = (BYTE*)malloc(ulUpdateOutLen + 1);
+    if (bUpdateOut == NULL)
+    {
+        PrintMsg("malloc wrong !");
+        return ;
+    }
+    rv = SKF_EncryptUpdate(hKey, bIndata, ulIndataLen, bUpdateOut, &ulUpdateOutLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_EncryptUpdate Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_EncryptUpdate OK\n");
+    rv = SKF_EncryptFinal(hKey, NULL, &ulFinalOutLen);
+    bFinalOut = (BYTE*)malloc(ulUpdateOutLen + 1);
+    if (bFinalOut == NULL)
+    {
+        PrintMsg("malloc wrong !");
+        return ;
+    }
+    rv = SKF_EncryptFinal(hKey, bFinalOut, &ulFinalOutLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_EncryptFinal Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_EncryptFinal OK\n");
+    rv = SKF_CloseHandle(hKey);
+    // å¤šç»„æ•°æ®åŠ å¯†ç»“æœç”± bUpdateOut||bFinalOut æ„æˆ
+    memset(bOutData, 0x00, ulIndataLen);
+    memcpy(bOutData, bUpdateOut, ulUpdateOutLen);
+    memcpy(bOutData + ulUpdateOutLen, bFinalOut, ulFinalOutLen);
 
-	// ½âÃÜ½Ó¿Ú¡¢ÏûÏ¢¼ø±ğÂë½Ó¿ÚµÄÊ¹ÓÃÓë¼ÓÃÜ½Ó¿ÚÊ¹ÓÃÏàËÆ
-	// SKF_SetSymmKey => SKF_DecryptInit => SKF_Decryptµ¥×éÊı¾İ½âÃÜ¡¾SKF_DecryptUpdate/SKF_DecryptFinal¶à×éÊı¾İ½âÃÜ¡¿
-	// SKF_SetSymmKey => SKF_MacInit => SKF_Macµ¥×éÊı¾İ¡¾SKF_MacUpdate/SKF_MacFinal¶à×éÊı¾İ¡¿
+    // è§£å¯†æ¥å£ã€æ¶ˆæ¯é‰´åˆ«ç æ¥å£çš„ä½¿ç”¨ä¸åŠ å¯†æ¥å£ä½¿ç”¨ç›¸ä¼¼
+    // SKF_SetSymmKey => SKF_DecryptInit => SKF_Decryptå•ç»„æ•°æ®è§£å¯†ã€SKF_DecryptUpdate/SKF_DecryptFinalå¤šç»„æ•°æ®è§£å¯†ã€‘
+    // SKF_SetSymmKey => SKF_MacInit => SKF_Macå•ç»„æ•°æ®ã€SKF_MacUpdate/SKF_MacFinalå¤šç»„æ•°æ®ã€‘
 
 
 
-	// ************************************************
-	// **************** ÔÓ´Õ(¹şÏ£)ÔËËã ****************
-	// ************************************************
-	// Ëã·¨±êÊ¶ SGD_SM3/SGD_SHA1/SGD_SHA256
-	/*==> ½Ó¿ÚÊ¹ÓÃÁ÷³Ì: 
-	  SKF_DigestInitÔÓ´Õ³õÊ¼»¯ ==> SKF_Digestµ¥×éÊı¾İÔÓ´Õ/SKF_DigestUpdate + SKF_DigestFinal¶à×éÊı¾İÔÓ´Õ
+    // ************************************************
+    // **************** æ‚å‡‘(å“ˆå¸Œ)è¿ç®— ****************
+    // ************************************************
+    // ç®—æ³•æ ‡è¯† SGD_SM3/SGD_SHA1/SGD_SHA256
+    /*==> æ¥å£ä½¿ç”¨æµç¨‹:
+	  SKF_DigestInitæ‚å‡‘åˆå§‹åŒ– ==> SKF_Digestå•ç»„æ•°æ®æ‚å‡‘/SKF_DigestUpdate + SKF_DigestFinalå¤šç»„æ•°æ®æ‚å‡‘
 	<==*/
 
-	// ÔÓ´Õ³õÊ¼»¯
-	// ÉèÖÃÔÓ´ÕËã·¨±êÊ¶ulAlgID, »ñµÃÔÓ´ÕÔËËã¾ä±úhHash
-	// NULL, NULL, 0´¦²ÎÊı·Ö±ğ´ú±í Ç©ÃûÕß¹«Ô¿¡¢Ç©ÃûÕßID¡¢Ç©ÃûÕßID³¤¶È,  ÕâÈı¸ö²ÎÊıÖ»ÔÚSGD_SM3Ëã·¨ Ç©ÃûÕßID´æÔÚÇé¿öÊ±Ê¹ÓÃ
-	ulAlgID = SGD_SHA1;
-	rv = SKF_DigestInit(hDev, ulAlgID, NULL, NULL, 0, &hHash);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_DigestInit Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_DigestInit OK\n");
+    // æ‚å‡‘åˆå§‹åŒ–
+    // è®¾ç½®æ‚å‡‘ç®—æ³•æ ‡è¯†ulAlgID, è·å¾—æ‚å‡‘è¿ç®—å¥æŸ„hHash
+    // NULL, NULL, 0å¤„å‚æ•°åˆ†åˆ«ä»£è¡¨ ç­¾åè€…å…¬é’¥ã€ç­¾åè€…IDã€ç­¾åè€…IDé•¿åº¦,  è¿™ä¸‰ä¸ªå‚æ•°åªåœ¨SGD_SM3ç®—æ³• ç­¾åè€…IDå­˜åœ¨æƒ…å†µæ—¶ä½¿ç”¨
+    ulAlgID = SGD_SHA1;
+    rv = SKF_DigestInit(hDev, ulAlgID, NULL, NULL, 0, &hHash);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_DigestInit Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_DigestInit OK\n");
 
-	// µ¥×éÊı¾İÔÓ´Õ
-	// Ê¹ÓÃÖ®Ç°±ØĞëÊ¹ÓÃSKF_DigestInit
-	// bIndata Îª´ıÔÓ´ÕÔËËãÊı¾İ, ulIndataLenÎª³¤¶È, bOutDataÎªÔÓ´Õ½á¹û, ulOutdataLenÎªÔÓ´Õ½á¹û³¤¶È
-	ulOutdataLen = 1024;
-	memset(bOutData, 0x00, 1024);
-	rv = SKF_Digest(hHash, bIndata, ulIndataLen, bOutData, &ulOutdataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_Digest Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_Digest OK\n");
-	rv = SKF_CloseHandle(hHash);
-	// ¶à×éÊı¾İÔÓ´Õ
-	// SKF_DigestUpdate/SKF_DigestFinal±ØĞëÒ»ÆğÊ¹ÓÃ£¬Ö®Ç°±ØĞëSKF_DigestInit
-	// SKF_DigestUpdate¶Ô¶à¸ö·Ö×é½øĞĞÔÓ´Õ¼ÆËã, SKF_DigestFinal½áÊøÔÓ´Õ²¢»ñµÃÔÓ´Õ½á¹û
-	rv = SKF_DigestInit(hDev, ulAlgID, NULL, NULL, 0, &hHash);
-	rv = SKF_DigestUpdate(hHash, bIndata, ulIndataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_DigestUpdate Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_DigestUpdate OK\n");
-	rv = SKF_DigestFinal(hHash, bOutData, &ulOutdataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_DigestFinal Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_DigestFinal OK\n");
-	rv = SKF_CloseHandle(hHash);
+    // å•ç»„æ•°æ®æ‚å‡‘
+    // ä½¿ç”¨ä¹‹å‰å¿…é¡»ä½¿ç”¨SKF_DigestInit
+    // bIndata ä¸ºå¾…æ‚å‡‘è¿ç®—æ•°æ®, ulIndataLenä¸ºé•¿åº¦, bOutDataä¸ºæ‚å‡‘ç»“æœ, ulOutdataLenä¸ºæ‚å‡‘ç»“æœé•¿åº¦
+    ulOutdataLen = 1024;
+    memset(bOutData, 0x00, 1024);
+    rv = SKF_Digest(hHash, bIndata, ulIndataLen, bOutData, &ulOutdataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_Digest Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_Digest OK\n");
+    rv = SKF_CloseHandle(hHash);
+    // å¤šç»„æ•°æ®æ‚å‡‘
+    // SKF_DigestUpdate/SKF_DigestFinalå¿…é¡»ä¸€èµ·ä½¿ç”¨ï¼Œä¹‹å‰å¿…é¡»SKF_DigestInit
+    // SKF_DigestUpdateå¯¹å¤šä¸ªåˆ†ç»„è¿›è¡Œæ‚å‡‘è®¡ç®—, SKF_DigestFinalç»“æŸæ‚å‡‘å¹¶è·å¾—æ‚å‡‘ç»“æœ
+    rv = SKF_DigestInit(hDev, ulAlgID, NULL, NULL, 0, &hHash);
+    rv = SKF_DigestUpdate(hHash, bIndata, ulIndataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_DigestUpdate Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_DigestUpdate OK\n");
+    rv = SKF_DigestFinal(hHash, bOutData, &ulOutdataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_DigestFinal Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_DigestFinal OK\n");
+    rv = SKF_CloseHandle(hHash);
 
 
-	if (bIndata != NULL)
-	{
-		free(bIndata);
-		bIndata = NULL;
-	}
-	if (bOutData != NULL)
-	{
-		free(bOutData);
-		bOutData = NULL;
-	}
-	if (bUpdateOut != NULL)
-	{
-		free(bUpdateOut);
-		bUpdateOut = NULL;
-	}
-	if (bFinalOut != NULL)
-	{
-		free(bFinalOut);
-		bFinalOut = NULL;
-	}
+    if (bIndata != NULL)
+    {
+        free(bIndata);
+        bIndata = NULL;
+    }
+    if (bOutData != NULL)
+    {
+        free(bOutData);
+        bOutData = NULL;
+    }
+    if (bUpdateOut != NULL)
+    {
+        free(bUpdateOut);
+        bUpdateOut = NULL;
+    }
+    if (bFinalOut != NULL)
+    {
+        free(bFinalOut);
+        bFinalOut = NULL;
+    }
 }

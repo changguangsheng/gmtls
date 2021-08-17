@@ -1,5 +1,5 @@
 
-/* Ó¦ÓÃ½Ó¿Ú */
+/* åº”ç”¨æ¥å£ */
 
 #include <stdio.h>
 #include "CommonType.h"
@@ -10,96 +10,96 @@
 
 void dev_appliction_funs_test()
 {
-	ULONG rv = 0;
-	char AppName[256] = {0};
-	ULONG ulSize = 256;
-		
-	// ´´½¨Ó¦ÓÃ
-	// Test_ApplicationÎªÓ¦ÓÃÃû³Æ, Ó¦ÓÃÃû³ÆĞ¡ÓÚ64×Ö½Ú
-	// "123456"Îª¹ÜÀíÔ±PINÂë,5Îª¹ÜÀíÔ±PINÂë×î´óÖØÊÔ´ÎÊı, "654321", 3ÎªÓÃ»§PINÂëºÍ×î´óÖØÊÔ´ÎÊı,PINÂë³¤¶ÈÎª6-16×Ö½Ú
-	// SECURE_ANYONE_ACCOUNTÎªÔÚ¸ÃÓ¦ÓÃÏÂ´´½¨ÎÄ¼ş/ÈİÆ÷µÄÈ¨ÏŞ£º
-	// SECURE_ANYONE_ACCOUNTÈÎºÎÈË¶¼¿ÉÒÔ/SECURE_NEVER_ACCOUNTÈÎºÎÈË¶¼²»ÄÜ/SECURE_ADM_ACCOUNTÖ»¹ÜÀíÔ±¿ÉÒÔ/SECURE_USER_ACCOUNTÓÃ»§
-	rv = SKF_CreateApplication(hDev, "Test_Application", "123456", 5, "654321", 3, SECURE_ANYONE_ACCOUNT, &hApplication);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_CreateApplication Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	rv = SKF_CloseApplication(hApplication);
-	PrintMsg("SKF_CreateApplication OK\n");
+    ULONG rv = 0;
+    char AppName[256] = {0};
+    ULONG ulSize = 256;
 
-	// Ã¶¾ÙÓ¦ÓÃ
-	// Ã¶¾Ùµ±Ç°Éè±¸ÖĞµÄÓ¦ÓÃ,AppName±£´æÃ¶¾Ùµ½µÄÓ¦ÓÃÃû³Æ,Ó¦ÓÃÃû³Æ¼äÒÔ'\0'·Ö¸î,ulSizeÎªËùÓĞÓ¦ÓÃÃû³ÆËùÕ¼¿Õ¼ä´óĞ¡
-	rv = SKF_EnumApplication(hDev, AppName, &ulSize);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_EnumApplication Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_EnumApplication OK\n");
+    // åˆ›å»ºåº”ç”¨
+    // Test_Applicationä¸ºåº”ç”¨åç§°, åº”ç”¨åç§°å°äº64å­—èŠ‚
+    // "123456"ä¸ºç®¡ç†å‘˜PINç ,5ä¸ºç®¡ç†å‘˜PINç æœ€å¤§é‡è¯•æ¬¡æ•°, "654321", 3ä¸ºç”¨æˆ·PINç å’Œæœ€å¤§é‡è¯•æ¬¡æ•°,PINç é•¿åº¦ä¸º6-16å­—èŠ‚
+    // SECURE_ANYONE_ACCOUNTä¸ºåœ¨è¯¥åº”ç”¨ä¸‹åˆ›å»ºæ–‡ä»¶/å®¹å™¨çš„æƒé™ï¼š
+    // SECURE_ANYONE_ACCOUNTä»»ä½•äººéƒ½å¯ä»¥/SECURE_NEVER_ACCOUNTä»»ä½•äººéƒ½ä¸èƒ½/SECURE_ADM_ACCOUNTåªç®¡ç†å‘˜å¯ä»¥/SECURE_USER_ACCOUNTç”¨æˆ·
+    rv = SKF_CreateApplication(hDev, "Test_Application", "123456", 5, "654321", 3, SECURE_ANYONE_ACCOUNT, &hApplication);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_CreateApplication Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    rv = SKF_CloseApplication(hApplication);
+    PrintMsg("SKF_CreateApplication OK\n");
 
-	// ´ò¿ªÓ¦ÓÃ
-	// ´ò¿ªÃû×ÖÎªAppNameµÄÓ¦ÓÃ, ´ò¿ª³É¹¦»ñµÃÓ¦ÓÃ¾ä±úhApplication
-	rv = SKF_OpenApplication(hDev, AppName, &hApplication);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_OpenApplication Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_OpenApplication OK\n");
+    // æšä¸¾åº”ç”¨
+    // æšä¸¾å½“å‰è®¾å¤‡ä¸­çš„åº”ç”¨,AppNameä¿å­˜æšä¸¾åˆ°çš„åº”ç”¨åç§°,åº”ç”¨åç§°é—´ä»¥'\0'åˆ†å‰²,ulSizeä¸ºæ‰€æœ‰åº”ç”¨åç§°æ‰€å ç©ºé—´å¤§å°
+    rv = SKF_EnumApplication(hDev, AppName, &ulSize);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_EnumApplication Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_EnumApplication OK\n");
 
-	// ¹Ø±ÕÓ¦ÓÃ
-	// ¹Ø±ÕÓ¦ÓÃ¾ä±úÖ¸ÏòµÄÓ¦ÓÃ
-	rv = SKF_CloseApplication(hApplication);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_CloseApplication Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_CloseApplication OK\n");
+    // æ‰“å¼€åº”ç”¨
+    // æ‰“å¼€åå­—ä¸ºAppNameçš„åº”ç”¨, æ‰“å¼€æˆåŠŸè·å¾—åº”ç”¨å¥æŸ„hApplication
+    rv = SKF_OpenApplication(hDev, AppName, &hApplication);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_OpenApplication Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_OpenApplication OK\n");
+
+    // å…³é—­åº”ç”¨
+    // å…³é—­åº”ç”¨å¥æŸ„æŒ‡å‘çš„åº”ç”¨
+    rv = SKF_CloseApplication(hApplication);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_CloseApplication Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_CloseApplication OK\n");
 
 
-	// É¾³ıÓ¦ÓÃ
-	// É¾³ıÃû×ÖÎªApplicationµÄÓ¦ÓÃ,Èç¹ûÓ¦ÓÃ´æÔÚÔòÉ¾³ı³É¹¦,·ñÔò·µ»ØÓ¦ÓÃ²»´æÔÚ´íÎóÂë,ÒòÎªÎŞApplication»áÉ¾³ıÊ§°Ü£¬ÒÔÏÂÊµÏÖÖ»¹©²Î¿¼¡£
-	rv = SKF_DeleteApplication(hDev, "Application");
-	PrintMsg("SKF_DeleteApplication OK\n");
+    // åˆ é™¤åº”ç”¨
+    // åˆ é™¤åå­—ä¸ºApplicationçš„åº”ç”¨,å¦‚æœåº”ç”¨å­˜åœ¨åˆ™åˆ é™¤æˆåŠŸ,å¦åˆ™è¿”å›åº”ç”¨ä¸å­˜åœ¨é”™è¯¯ç ,å› ä¸ºæ— Applicationä¼šåˆ é™¤å¤±è´¥ï¼Œä»¥ä¸‹å®ç°åªä¾›å‚è€ƒã€‚
+    rv = SKF_DeleteApplication(hDev, "Application");
+    PrintMsg("SKF_DeleteApplication OK\n");
 }
 
 
-// Çå¿ÕÉè±¸ÖĞµÄÓ¦ÓÃ
+// æ¸…ç©ºè®¾å¤‡ä¸­çš„åº”ç”¨
 void clear_dev_app()
 {
-	DWORD rv = 0;
-	int i = 0;
-	char AppName[256] = {0};
-	ULONG AppSize = 256;
-	rv = SKF_EnumApplication(hDev,AppName,&AppSize);
-	if (rv == SAR_OK)
-	{
-		while (i < (int)AppSize)
-		{
-			if (AppName[i] == '\0')
-			{
-				break;
-			}
-			rv = SKF_DeleteApplication(hDev, (char*)&(AppName[i]));
-			while(AppName[i] != '\0')
-			{	
-				i++;
-			}
-			i++;
-			if (AppName[i] == '\0')
-			{
-				break;
-			}
-		}
-	}
+    DWORD rv = 0;
+    int i = 0;
+    char AppName[256] = {0};
+    ULONG AppSize = 256;
+    rv = SKF_EnumApplication(hDev,AppName,&AppSize);
+    if (rv == SAR_OK)
+    {
+        while (i < (int)AppSize)
+        {
+            if (AppName[i] == '\0')
+            {
+                break;
+            }
+            rv = SKF_DeleteApplication(hDev, (char*)&(AppName[i]));
+            while(AppName[i] != '\0')
+            {
+                i++;
+            }
+            i++;
+            if (AppName[i] == '\0')
+            {
+                break;
+            }
+        }
+    }
 }

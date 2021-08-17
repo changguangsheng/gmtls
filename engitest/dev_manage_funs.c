@@ -1,5 +1,5 @@
 
-/* Éè±¸¹ÜÀí½Ó¿Ú */
+/* è®¾å¤‡ç®¡ç†æ¥å£ */
 
 
 #include <stdio.h>
@@ -11,103 +11,105 @@ extern int bMultiTest;
 
 void dev_manage_funs_test()
 {
-	ULONG rv = 0;
-	char keylist[1280] = {0};
-	ULONG keylistLen = 1280;
-	char szDevName[1280] = {0};
-	ULONG ulDevNameLen = 8, ulEvent = 0;
-	ULONG ulDevState = 0;
-	char szLabel[32] = {0};
-	DEVINFO devInfo;
-	ULONG ulTimeOut = 1000;
+    ULONG rv = 0;
+    char keylist[1280] = {0};
+    ULONG keylistLen = 1280;
+    char szDevName[1280] = {0};
+    ULONG ulDevNameLen = 8, ulEvent = 0;
+    ULONG ulDevState = 0;
+    char szLabel[32] = {0};
+    DEVINFO devInfo;
+    ULONG ulTimeOut = 1000;
 
 
-	// Ã¶¾ÙÉè±¸
-	// TRUE Ã¶¾Ùµ±Ç°´æÔÚµÄÉè±¸,keylist±£´æÃ¶¾Ùµ½µÄÉè±¸Ãû³Æ[ÈçI:],keylistLen·µ»ØÉè±¸³¤¶È,ÎªÉè±¸¸öÊı*4
-	rv = SKF_EnumDev(TRUE, keylist, &keylistLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_EnumDev Wrong\n",rv);
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_EnumDev OK\n",rv);
+    // æšä¸¾è®¾å¤‡
+    // TRUE æšä¸¾å½“å‰å­˜åœ¨çš„è®¾å¤‡,keylistä¿å­˜æšä¸¾åˆ°çš„è®¾å¤‡åç§°[å¦‚I:],keylistLenè¿”å›è®¾å¤‡é•¿åº¦,ä¸ºè®¾å¤‡ä¸ªæ•°*4
+    rv = SKF_EnumDev(TRUE, keylist, &keylistLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_EnumDev Wrong\n",rv);
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_EnumDev OK\n",rv);
 
-	// Á¬½ÓÉè±¸
-	// ÊäÈëÉè±¸Ãû³Ækeylist, Á¬½Ó·µ»ØÉè±¸¾ä±úhDev
-	rv = SKF_ConnectDev(keylist, &hDev);
-	if (rv != SAR_OK || hDev == NULL)
-	{
-		PrintMsg("SKF_ConnectDev Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_ConnectDev OK\n");
+    // è¿æ¥è®¾å¤‡
+    // è¾“å…¥è®¾å¤‡åç§°keylist, è¿æ¥è¿”å›è®¾å¤‡å¥æŸ„hDev
+    rv = SKF_ConnectDev(keylist, &hDev);
+    if (rv != SAR_OK || hDev == NULL)
+    {
+        PrintMsg("SKF_ConnectDev Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_ConnectDev OK\n");
 
 
-	if (!bMultiTest)
-	{
-		// µÈ´ıÉè±¸°Î²å
-		PrintMsg("Çë°ÎµôÉè±¸...\n");
-		// szDevName´«³ö·¢Éú°Î²åÊÂ¼şµÄÉè±¸Ãû³Æ[ÈçI:], ulDevNameLen±íÊ¾Éè±¸Ãû³ÆµÄÓĞĞ§³¤¶È, 
-		// ulEventÎªÊÂ¼şÀàĞÍ[1-²åÈë,2-°Î³ö]
-		rv = SKF_WaitForDevEvent(szDevName, &ulDevNameLen, &ulEvent);
-		if (rv != SAR_OK)
-		{
-			PrintMsg("SKF_WaitForDevEvent Wrong\n");
-			fflush(stdin);
-			getchar();
-			return ;
-		}
-		PrintMsg("SKF_WaitForDevEvent OK\n");
-		// »ñÈ¡Éè±¸
-		// szDevName´«ÈëÉè±¸Ãû³Æ, ulDevState´«³ö¸ÃÉè±¸µ±Ç°×´Ì¬[0-²»´æÔÚ,1-´æÔÚ]
-		rv = SKF_GetDevState(szDevName, &ulDevState);
-		if (rv != SAR_OK)
-		{
-			PrintMsg("SKF_GetDevState Wrong\n");
-			fflush(stdin);
-			getchar();
-			return ;
-		}
-		PrintMsg("SKF_GetDevState OK, Éè±¸[%s]´æÔÚ×´Ì¬[%u]\n" ,szDevName, ulDevState);
+    if (!bMultiTest)
+    {
+        // ç­‰å¾…è®¾å¤‡æ‹”æ’
+        PrintMsg("è¯·æ‹”æ‰è®¾å¤‡...\n");
+        // szDevNameä¼ å‡ºå‘ç”Ÿæ‹”æ’äº‹ä»¶çš„è®¾å¤‡åç§°[å¦‚I:], ulDevNameLenè¡¨ç¤ºè®¾å¤‡åç§°çš„æœ‰æ•ˆé•¿åº¦,
+        // ulEventä¸ºäº‹ä»¶ç±»å‹[1-æ’å…¥,2-æ‹”å‡º]
+        rv = SKF_WaitForDevEvent(szDevName, &ulDevNameLen, &ulEvent);
+        if (rv != SAR_OK)
+        {
+            PrintMsg("SKF_WaitForDevEvent Wrong\n");
+            fflush(stdin);
+            getchar();
+            return ;
+        }
+        PrintMsg("SKF_WaitForDevEvent OK\n");
+        // è·å–è®¾å¤‡
+        // szDevNameä¼ å…¥è®¾å¤‡åç§°, ulDevStateä¼ å‡ºè¯¥è®¾å¤‡å½“å‰çŠ¶æ€[0-ä¸å­˜åœ¨,1-å­˜åœ¨]
+        rv = SKF_GetDevState(szDevName, &ulDevState);
+        if (rv != SAR_OK)
+        {
+            PrintMsg("SKF_GetDevState Wrong\n");
+            fflush(stdin);
+            getchar();
+            return ;
+        }
+        PrintMsg("SKF_GetDevState OK, è®¾å¤‡[%s]å­˜åœ¨çŠ¶æ€[%u]\n" ,szDevName, ulDevState);
 
-		PrintMsg("Çë²åÉÏÉè±¸...\n");
-		rv = SKF_WaitForDevEvent(szDevName, &ulDevNameLen, &ulEvent);
-		rv = SKF_GetDevState(szDevName, &ulDevState);
-		rv = SKF_ConnectDev(szDevName, &hDev);
-	}
+        PrintMsg("è¯·æ’ä¸Šè®¾å¤‡...\n");
+        rv = SKF_WaitForDevEvent(szDevName, &ulDevNameLen, &ulEvent);
+        rv = SKF_GetDevState(szDevName, &ulDevState);
+        rv = SKF_ConnectDev(szDevName, &hDev);
+    }
 
-	// ÉèÖÃÉè±¸±êÇ©
-	// szLabelÎªÒªÉèÖÃµÄ±êÇ©×Ö´®,ĞèĞ¡ÓÚ32×Ö½Ú
-	memcpy(szLabel, "WXTSDKEY", 8);
-	rv = SKF_SetLabel(hDev, szLabel);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_SetLabel Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_SetLabel OK\n");
-	
-	// »ñÈ¡Éè±¸ĞÅÏ¢	 devInfoÎª±£´æµÄÉè±¸ĞÅÏ¢½á¹¹
-	memset(&devInfo, 0,sizeof(DEVINFO));
-	rv  = SKF_GetDevInfo(hDev, &devInfo);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_GetDevInfo Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_GetDevInfo OK\n");
+    // è®¾ç½®è®¾å¤‡æ ‡ç­¾
+    // szLabelä¸ºè¦è®¾ç½®çš„æ ‡ç­¾å­—ä¸²,éœ€å°äº32å­—èŠ‚
+    memcpy(szLabel, "WXTSDKEY", 8);
+    rv = SKF_SetLabel(hDev, szLabel);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_SetLabel Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_SetLabel OK\n");
 
-	// Ëø¶¨/½âËøÉè±¸ == »ñÈ¡/ÊÍ·ÅÉè±¸µÄ¶ÀÕ¼È¨
-	rv = SKF_LockDev(hDev, ulTimeOut);	// ulTimeOut³¬Ê±Ê±¼ä,ÒÔºÁÃëÎªµ¥Î»
-	rv = SKF_UnlockDev(hDev);
 
+    // è·å–è®¾å¤‡ä¿¡æ¯	 devInfoä¸ºä¿å­˜çš„è®¾å¤‡ä¿¡æ¯ç»“æ„
+    memset(&devInfo, 0,sizeof(DEVINFO));
+    rv  = SKF_GetDevInfo(hDev, &devInfo);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_GetDevInfo Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_GetDevInfo OK\n");
+
+    // é”å®š/è§£é”è®¾å¤‡ == è·å–/é‡Šæ”¾è®¾å¤‡çš„ç‹¬å æƒ
+    rv = SKF_LockDev(hDev, ulTimeOut);	// ulTimeOutè¶…æ—¶æ—¶é—´,ä»¥æ¯«ç§’ä¸ºå•ä½
+    rv = SKF_UnlockDev(hDev);
+
+    return 1;
 
 }

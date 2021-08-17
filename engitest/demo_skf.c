@@ -22,38 +22,38 @@ HAPPLICATION hApplication = NULL;
 HCONTAINER hContainer = NULL;
 int bMultiTest = 1;
 
-// ±Í◊º ˝æ› ’‚ «ECC√‹‘ø–≠…ÃÀ˘–Ëµƒ±Í◊º ˝æ›
+// Ê†áÂáÜÊï∞ÊçÆ ËøôÊòØECCÂØÜÈí•ÂçèÂïÜÊâÄÈúÄÁöÑÊ†áÂáÜÊï∞ÊçÆ
 unsigned char X_sm2[] = {
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-    0x3C,0xB5,0x72,0xF0,0xD5,0x48,0xD4,0x89,0xA8,0xDB,0x97,0xB7,0x37,0xE0,0xAC,0x63,
-    0x36,0x7F,0x10,0xE8,0x06,0xD1,0xFA,0xF3,0x1D,0x7C,0x0D,0x09,0xEF,0xBF,0x82,0x4F
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+        0x3C,0xB5,0x72,0xF0,0xD5,0x48,0xD4,0x89,0xA8,0xDB,0x97,0xB7,0x37,0xE0,0xAC,0x63,
+        0x36,0x7F,0x10,0xE8,0x06,0xD1,0xFA,0xF3,0x1D,0x7C,0x0D,0x09,0xEF,0xBF,0x82,0x4F
 };
 unsigned char Y_sm2[] = {
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-    0xA2,0x77,0x85,0x1E,0xB1,0x1B,0x88,0xF5,0x97,0xCA,0xFB,0xBF,0x87,0xF8,0x62,0x55,
-    0xFA,0xC4,0xE5,0xE0,0x21,0xF9,0xE6,0x5B,0x02,0xEA,0x5C,0xEA,0x78,0x10,0xBD,0x4A
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+        0xA2,0x77,0x85,0x1E,0xB1,0x1B,0x88,0xF5,0x97,0xCA,0xFB,0xBF,0x87,0xF8,0x62,0x55,
+        0xFA,0xC4,0xE5,0xE0,0x21,0xF9,0xE6,0x5B,0x02,0xEA,0x5C,0xEA,0x78,0x10,0xBD,0x4A
 };
 unsigned char prikey_sm2[] = {
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-    0x5B,0x9A,0x69,0xF5,0x9B,0xA5,0xC1,0xB5,0xFA,0x88,0x7E,0x2D,0x32,0xE9,0xA0,0xA4,
-    0x31,0x77,0x5C,0xB2,0xB1,0xFD,0xC1,0x31,0x78,0x29,0x67,0xF2,0xBE,0x38,0x08,0xA3
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+        0x5B,0x9A,0x69,0xF5,0x9B,0xA5,0xC1,0xB5,0xFA,0x88,0x7E,0x2D,0x32,0xE9,0xA0,0xA4,
+        0x31,0x77,0x5C,0xB2,0xB1,0xFD,0xC1,0x31,0x78,0x29,0x67,0xF2,0xBE,0x38,0x08,0xA3
 };
 
 void PrintMsg( char *fmt, ... );
-// √‹‘ø–≠…ÃÀ˘–Ëµƒ¡¨Ω”…Ë±∏∫Õ…Ë±∏»œ÷§Ω”ø⁄
+// ÂØÜÈí•ÂçèÂïÜÊâÄÈúÄÁöÑËøûÊé•ËÆæÂ§áÂíåËÆæÂ§áËÆ§ËØÅÊé•Âè£
 /*
- ‰»Î£∫
-uzDevName:…Ë±∏≈Ã∑˚
- ‰≥ˆ£∫
-phDev£∫…Ë±∏æ‰±˙
+ËæìÂÖ•Ôºö
+uzDevName:ËÆæÂ§áÁõòÁ¨¶
+ËæìÂá∫Ôºö
+phDevÔºöËÆæÂ§áÂè•ÊüÑ
 */
 int ConnectAndAuthDev(char* uzDevName, HANDLE* phDev);
-// ECC√‹‘ø–≠…Ã≤‚ ‘
+// ECCÂØÜÈí•ÂçèÂïÜÊµãËØï
 /*
-Œﬁ
+Êó†
 */
 void EccGenerateKeyInterfaceTest();
 void get_hw_sw_info();
@@ -63,14 +63,14 @@ void test_alg_performances_skf();
 
 void clearInputBuffer()
 {
-	int temp;
-	if(scanf("%d",&temp) != EOF)
-	{
-		while((temp=getchar()) != '\n' && temp != EOF)
-		{
-			;
-		}
-	}
+    int temp;
+    if(scanf("%d",&temp) != EOF)
+    {
+        while((temp=getchar()) != '\n' && temp != EOF)
+        {
+            ;
+        }
+    }
 }
 
 int main()
@@ -78,172 +78,172 @@ int main()
     UINT32 lLoopNum = 1, i = 0;
     BYTE c;
 
-	SKFE_IssueCard();
+    SKFE_IssueCard();
+    //get some software & hardware version
+    get_hw_sw_info();
 
-	get_hw_sw_info();
+    RETRY:
+    printf("1. Basic SKF interface test \n");
+    printf("2. Firmware update test \n");
+    printf("3. Get hardware code \n");
+    printf("4. alg performances test \n");
+    PrintMsg("> pls select test item : \n");
+    fflush(stdin);
+    scanf("%d",&c);
 
-RETRY:
-	printf("1. Basic SKF interface test \n");
-	printf("2. Firmware update test \n");
-	printf("3. Get hardware code \n");
-	printf("4. alg performances test \n");
-	PrintMsg("> pls select test item : \n");
-	fflush(stdin);
-	scanf("%d",&c);
+    if(0x02 == c)
+    {
+        test_update_firmware();
 
-	if(0x02 == c)
-	{
-		test_update_firmware();
+    }
+    else if(0x01 == c)
+    {
+        test_all_skf();
+    }
+    else if(0x03 == c)
+    {
+        get_hw_code();
+    }
+    else if(0x04 == c)
+    {
+        test_alg_performances_skf();
+    }
+    else
+    {
+        printf("Selected test item invalid \n");
+    }
+    goto RETRY;
 
-	}
-	else if(0x01 == c)
-	{
-		test_all_skf();
-	}
-	else if(0x03 == c)
-	{
-		get_hw_code();
-	}
-	else if(0x04 == c)
-	{
-		test_alg_performances_skf();
-	}
-	else
-	{
-		printf("Selected test item invalid \n");
-	}
-	goto RETRY;
-    
 #ifndef LINUX
     system("pause");
-#endif 
+#endif
     return 0;
 }
 
 //get some software & hardware version
 void get_hw_sw_info()
 {
-	ULONG rv;
-	char keylist[256] = {0};
-	ULONG keylistLen = 256;
-	char szDevName[256] = {0};
-	ULONG ulDevNameLen = 8, ulEvent = 0;
-	DEVINFO di;
-	PRODUCTINFO pi;
-	ULONG ulPlatformType = 0x00;
+    ULONG rv;
+    char keylist[256] = {0};
+    ULONG keylistLen = 256;
+    char szDevName[256] = {0};
+    ULONG ulDevNameLen = 8, ulEvent = 0;
+    DEVINFO di;
+    PRODUCTINFO pi;
+    ULONG ulPlatformType = 0x00;
 
-	//enum device
-	rv = SKF_EnumDev(TRUE, keylist, &keylistLen);
-	if (rv != SAR_OK)
-	{
-		printf("SKF_EnumDev Wrong 0x%08X\n",rv);
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	printf("SKF_EnumDev OK\n",rv);
+    //enum device
+    rv = SKF_EnumDev(TRUE, keylist, &keylistLen);
+    if (rv != SAR_OK)
+    {
+        printf("SKF_EnumDev Wrong 0x%08X\n",rv);
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    printf("SKF_EnumDev OK\n",rv);
 
-	//connect
-	rv = SKF_ConnectDev(keylist, &hDev);
-	if (rv != SAR_OK || hDev == NULL)
-	{
-		printf("SKF_ConnectDev Wrong\n");
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	printf("SKF_ConnectDev OK\n");
+    //connect
+    rv = SKF_ConnectDev(keylist, &hDev);
+    if (rv != SAR_OK || hDev == NULL)
+    {
+        printf("SKF_ConnectDev Wrong\n");
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    printf("SKF_ConnectDev OK\n");
 
-	//get platform type
-	rv = SKFE_GetPlatformType(hDev, &ulPlatformType);
-	if (rv != SAR_OK || hDev == NULL)
-	{
-		printf("SKFE_GetPlatformType Wrong\n");
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	printf("SKFE_GetPlatformType OK. platform = 0x%02X\n",ulPlatformType);
-	
-	memset(&di,0x00,sizeof(DEVINFO));
-	rv = SKF_GetDevInfo(hDev, &di);
-	if (SAR_OK != rv)
-	{
-		printf("SKF_GetDevInfo Wrong errcode = %08X\n",rv);
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	printf("SKF_GetDevInfo OK\n");
+    //get platform type
+    rv = SKFE_GetPlatformType(hDev, &ulPlatformType);
+    if (rv != SAR_OK || hDev == NULL)
+    {
+        printf("SKFE_GetPlatformType Wrong\n");
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    printf("SKFE_GetPlatformType OK. platform = 0x%02X\n",ulPlatformType);
 
-	memset(&pi,0x00,sizeof(PRODUCTINFO));
-	rv = SKFE_GetProductInfo(hDev, &pi);
-	if (SAR_OK != rv)
-	{
-		printf("SKF_GetProductinfo Wrong\n");
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	printf("SKF_GetProductinfo OK\n");
+    memset(&di,0x00,sizeof(DEVINFO));
+    rv = SKF_GetDevInfo(hDev, &di);
+    if (SAR_OK != rv)
+    {
+        printf("SKF_GetDevInfo Wrong errcode = %08X\n",rv);
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    printf("SKF_GetDevInfo OK\n");
 
-	SKF_DisConnectDev(hDev);
-	
-	//print info
-	printf("\n****************************************************************\n");
-	PrintMsg("DemoSKF version:	%s \n", DEMO_SKF_VERISION);
-	PrintMsg("Firmware Version:	%d.%d \n",di.FirmwareVersion.major,di.FirmwareVersion.minor);
-	PrintMsg("SKF Build Version:	%s \n", pi.SKFVer);
-	printf("****************************************************************\n\n");
-	
+    memset(&pi,0x00,sizeof(PRODUCTINFO));
+    rv = SKFE_GetProductInfo(hDev, &pi);
+    if (SAR_OK != rv)
+    {
+        printf("SKF_GetProductinfo Wrong\n");
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    printf("SKF_GetProductinfo OK\n");
+
+    SKF_DisConnectDev(hDev);
+
+    //print info
+    printf("\n****************************************************************\n");
+    PrintMsg("DemoSKF version:	%s \n", DEMO_SKF_VERISION);
+    PrintMsg("Firmware Version:	%d.%d \n",di.FirmwareVersion.major,di.FirmwareVersion.minor);
+    PrintMsg("SKF Build Version:	%s \n", pi.SKFVer);
+    printf("****************************************************************\n\n");
+
 }
 
 void get_hw_code()
 {
-	ULONG rv;
-	BYTE ucHwCode[64] = {0};
-	ULONG ulHwCodeLen = 64;
-	char keylist[256] = {0};
-	ULONG keylistLen = 256;
-	char szDevName[256] = {0};
-	ULONG ulDevNameLen = 8, ulEvent = 0;
+    ULONG rv;
+    BYTE ucHwCode[64] = {0};
+    ULONG ulHwCodeLen = 64;
+    char keylist[256] = {0};
+    ULONG keylistLen = 256;
+    char szDevName[256] = {0};
+    ULONG ulDevNameLen = 8, ulEvent = 0;
 
-	//enum device
-	rv = SKF_EnumDev(TRUE, keylist, &keylistLen);
-	if (rv != SAR_OK)
-	{
-		printf("SKF_EnumDev Wrong 0x%08X\n",rv);
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	printf("SKF_EnumDev OK\n",rv);
+    //enum device
+    rv = SKF_EnumDev(TRUE, keylist, &keylistLen);
+    if (rv != SAR_OK)
+    {
+        printf("SKF_EnumDev Wrong 0x%08X\n",rv);
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    printf("SKF_EnumDev OK\n",rv);
 
-	//connect
-	rv = SKF_ConnectDev(keylist, &hDev);
-	if (rv != SAR_OK || hDev == NULL)
-	{
-		printf("SKF_ConnectDev Wrong\n");
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	printf("SKF_ConnectDev OK\n");
-	//get hardware encode
-	rv = SKFE_GetHwCode(hDev, ucHwCode,&ulHwCodeLen);
-	if(SAR_OK != rv)
-	{
-		printf("SKFE_GetHwCode Wrong : 0x%08X\n",rv);
-		fflush(stdin);
-		getchar();
-		return;
-	}
-	SKF_DisConnectDev(hDev);
+    //connect
+    rv = SKF_ConnectDev(keylist, &hDev);
+    if (rv != SAR_OK || hDev == NULL)
+    {
+        printf("SKF_ConnectDev Wrong\n");
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    printf("SKF_ConnectDev OK\n");
+    //get hardware encode
+    rv = SKFE_GetHwCode(hDev, ucHwCode,&ulHwCodeLen);
+    if(SAR_OK != rv)
+    {
+        printf("SKFE_GetHwCode Wrong : 0x%08X\n",rv);
+        fflush(stdin);
+        getchar();
+        return;
+    }
+    SKF_DisConnectDev(hDev);
 
-	//print info
-	PrintMsg("\n****************************************************************\n");
-	PrintMsg("Hardware Version:	%s \n",ucHwCode);
-	PrintMsg("****************************************************************\n\n");
+    //print info
+    PrintMsg("\n****************************************************************\n");
+    PrintMsg("Hardware Version:	%s \n",ucHwCode);
+    PrintMsg("****************************************************************\n\n");
 }
 
 void test_all_skf()
@@ -253,10 +253,10 @@ void test_all_skf()
 
 #ifndef LINUX
     remove("Demo_log.txt");
-#endif 
+#endif
     for (i = 0; i < lLoopNum; ++i)
     {
-        //Android 64Œª±ÿ–Î’‚√¥¥Ú”°£¨∑Ò‘Ú”–Œ Ã‚
+        //Android 64‰ΩçÂøÖÈ°ªËøô‰πàÊâìÂç∞ÔºåÂê¶ÂàôÊúâÈóÆÈ¢ò
         PrintMsg("/**********************");
         PrintMsg("%d",i+1);
         PrintMsg(" test******************************/\n");
@@ -304,7 +304,7 @@ void test_all_skf()
     PrintMsg("Test complete\n");
 #ifndef LINUX
     system("pause");
-#endif 
+#endif
 }
 
 void test_alg_performances_skf()
@@ -314,10 +314,10 @@ void test_alg_performances_skf()
 
 #ifndef LINUX
     remove("Demo_log.txt");
-#endif 
+#endif
     for (i = 0; i < lLoopNum; ++i)
     {
-        //Android 64Œª±ÿ–Î’‚√¥¥Ú”°£¨∑Ò‘Ú”–Œ Ã‚
+        //Android 64‰ΩçÂøÖÈ°ªËøô‰πàÊâìÂç∞ÔºåÂê¶ÂàôÊúâÈóÆÈ¢ò
         PrintMsg("/**********************");
         PrintMsg("%d",i+1);
         PrintMsg(" test******************************/\n");
@@ -358,7 +358,7 @@ void test_alg_performances_skf()
     PrintMsg("Test complete\n");
 #ifndef LINUX
     system("pause");
-#endif 
+#endif
 }
 
 void PrintMsg( char *fmt, ... )
@@ -369,19 +369,19 @@ void PrintMsg( char *fmt, ... )
     if (fp == NULL){
         return ;
     }
-    // ¥Ú”°µΩlogŒƒº˛
+    // ÊâìÂç∞Âà∞logÊñá‰ª∂
     //fprintf(fp, "%s", "     ");
     va_start(ap, fmt);
     vfprintf(fp, fmt, ap);
     va_end(ap);
-    // ¥Ú”°µΩ¥∞ø⁄
+    // ÊâìÂç∞Âà∞Á™óÂè£
     va_start(ap, fmt);
     vprintf(fmt, ap);
     va_end(ap);
     fclose(fp);
 }
 
-// ¡¨Ω” »œ÷§…Ë±∏
+// ËøûÊé• ËÆ§ËØÅËÆæÂ§á
 int ConnectAndAuthDev(char* uzDevName, HANDLE* phDev)
 {
     DWORD rv = 0;
@@ -398,7 +398,7 @@ int ConnectAndAuthDev(char* uzDevName, HANDLE* phDev)
     rv = SKF_ConnectDev(uzDevName, &hDev);
     if (SAR_OK != rv)
     {
-		PrintMsg("SKF_ConnectDev Wrong.\n");
+        PrintMsg("SKF_ConnectDev Wrong.\n");
         return -1;
     }
     *phDev = hDev;
@@ -406,21 +406,21 @@ int ConnectAndAuthDev(char* uzDevName, HANDLE* phDev)
     rv  = SKF_GetDevInfo(hDev, &dev_info);
     if (SAR_OK != rv)
     {
-		PrintMsg("SKF_GetDevInfo Wrong.\n");
+        PrintMsg("SKF_GetDevInfo Wrong.\n");
         return -1;
     }
 
     rv = SKF_GenRandom(hDev,ucRandom,ulRandomLen);
     if (SAR_OK != rv)
     {
-		PrintMsg("SKF_GenRandom Wrong.\n");
+        PrintMsg("SKF_GenRandom Wrong.\n");
         return -1;
     }
 
     rv = SKF_SetSymmKey(hDev,(UCHAR*)KeyValue,dev_info.DevAuthAlgId,&hImportSessionKey);
     if (SAR_OK != rv)
     {
-		PrintMsg("SKF_SetSymmKey Wrong.\n");
+        PrintMsg("SKF_SetSymmKey Wrong.\n");
         return -1;
     }
 
@@ -430,7 +430,7 @@ int ConnectAndAuthDev(char* uzDevName, HANDLE* phDev)
     rv = SKF_EncryptInit(hImportSessionKey,EncryptParam);
     if (SAR_OK != rv)
     {
-		PrintMsg("SKF_EncryptInit Wrong.\n");
+        PrintMsg("SKF_EncryptInit Wrong.\n");
         SKF_CloseHandle(hImportSessionKey);
         return -1;
     }
@@ -439,14 +439,14 @@ int ConnectAndAuthDev(char* uzDevName, HANDLE* phDev)
     rv = SKF_Encrypt(hImportSessionKey,ucRandom,sizeof(ucRandom),ucDevauth,&ulDevAuth);
     if (SAR_OK != rv)
     {
-		PrintMsg("SKF_Encrypt Wrong.\n");
+        PrintMsg("SKF_Encrypt Wrong.\n");
         SKF_CloseHandle(hImportSessionKey);
         return -1;
     }
     rv = SKF_DevAuth(hDev,ucDevauth,ulDevAuth);
     if (SAR_OK != rv)
     {
-		PrintMsg("SKF_DevAuth Wrong.\n");
+        PrintMsg("SKF_DevAuth Wrong.\n");
         SKF_CloseHandle(hImportSessionKey);
         return -1;
     }
@@ -454,7 +454,7 @@ int ConnectAndAuthDev(char* uzDevName, HANDLE* phDev)
     return 0;
 }
 
-// √‹‘ø–≠…Ã≤‚ ‘
+// ÂØÜÈí•ÂçèÂïÜÊµãËØï
 void EccGenerateKeyInterfaceTest()
 {
     DWORD rv = 0;
@@ -482,17 +482,17 @@ void EccGenerateKeyInterfaceTest()
 
     HANDLE hAgreementKeyHandle1 = NULL, hAgreementKeyHandle2 = NULL;
 
-    // “‘œ¬ «ECC√‹‘ø–≠…Ãƒ£ƒ‚¡˜≥Ã£®∑¢∆∑Ω∫ÕœÏ”¶∑Ω «Õ¨“ª∏ˆ…Ë±∏£©
+    // ‰ª•‰∏ãÊòØECCÂØÜÈí•ÂçèÂïÜÊ®°ÊãüÊµÅÁ®ãÔºàÂèëËµ∑ÊñπÂíåÂìçÂ∫îÊñπÊòØÂêå‰∏Ä‰∏™ËÆæÂ§áÔºâ
 
-    // ∑¢∆∑Ω∑¢∆ECC√‹‘ø–≠…Ã¡˜≥Ã£¨≤˙…˙–≠…Ã ˝æ›
-    // œÏ”¶∑Ω π”√…œ ˆ–≠…Ã ˝æ›“≤≤˙…˙“ª∏ˆ–≠…Ã ˝æ›≤¢Õ¨ ±≤˙…˙ª·ª∞√‹‘ø
-    // ∑¢∆∑Ω π”√œÏ”¶∑Ω≤˙…˙µƒ–≠…Ã ˝æ›≤¢Õ¨ ±≤˙…˙”ÎœÏ”¶∑Ω“ª—˘µƒª·ª∞√‹‘ø
+    // ÂèëËµ∑ÊñπÂèëËµ∑ECCÂØÜÈí•ÂçèÂïÜÊµÅÁ®ãÔºå‰∫ßÁîüÂçèÂïÜÊï∞ÊçÆ
+    // ÂìçÂ∫îÊñπ‰ΩøÁî®‰∏äËø∞ÂçèÂïÜÊï∞ÊçÆ‰πü‰∫ßÁîü‰∏Ä‰∏™ÂçèÂïÜÊï∞ÊçÆÂπ∂ÂêåÊó∂‰∫ßÁîü‰ºöËØùÂØÜÈí•
+    // ÂèëËµ∑Êñπ‰ΩøÁî®ÂìçÂ∫îÊñπ‰∫ßÁîüÁöÑÂçèÂïÜÊï∞ÊçÆÂπ∂ÂêåÊó∂‰∫ßÁîü‰∏éÂìçÂ∫îÊñπ‰∏ÄÊ†∑ÁöÑ‰ºöËØùÂØÜÈí•
 
     rv = SKF_EnumDev(TRUE, uzDevList, &uDevListLen);
 
-    // …Ë±∏
+    // ËÆæÂ§á
     p = uzDevList;
-    // ¡¨Ω”…Ë±∏≤¢…Ë±∏»œ÷§
+    // ËøûÊé•ËÆæÂ§áÂπ∂ËÆæÂ§áËÆ§ËØÅ
     if (ConnectAndAuthDev(p, &hDev1) != 0)
     {
         PrintMsg("ConnectAndAuthDev Wrong. %s\n",p);
@@ -500,11 +500,11 @@ void EccGenerateKeyInterfaceTest()
         getchar();
         return ;
     }
-    // 
-    hDev = hDev1; // clear_dev_app÷–¿Ô”√µƒ…Ë±∏æ‰±˙ «»´æ÷±‰¡ø£¨π Ω´…Ë±∏µƒ…Ë±∏æ‰±˙∏≥÷µ∏¯À¸
-    // «Â≥˝…Ë±∏¿ÔÀ˘”–µƒ”¶”√
+    //
+    hDev = hDev1; // clear_dev_app‰∏≠ÈáåÁî®ÁöÑËÆæÂ§áÂè•ÊüÑÊòØÂÖ®Â±ÄÂèòÈáèÔºåÊïÖÂ∞ÜËÆæÂ§áÁöÑËÆæÂ§áÂè•ÊüÑËµãÂÄºÁªôÂÆÉ
+    // Ê∏ÖÈô§ËÆæÂ§áÈáåÊâÄÊúâÁöÑÂ∫îÁî®
     clear_dev_app();
-    // ‘⁄…Ë±∏¿Ô¥¥Ω®ECCTestApp”¶”√
+    // Âú®ËÆæÂ§áÈáåÂàõÂª∫ECCTestAppÂ∫îÁî®
     rv = SKF_CreateApplication(hDev1, "ECCTestApp", "AdminPin", 5, "UserPin", 3, SECURE_ANYONE_ACCOUNT, &hApp1);
     if (rv != SAR_OK)
     {
@@ -513,7 +513,7 @@ void EccGenerateKeyInterfaceTest()
         getchar();
         return ;
     }
-    // ‘⁄…Ë±∏¿ÔµƒECCTestApp”¶”√œ¬Ω¯––”√ªßPIN¬Î»œ÷§
+    // Âú®ËÆæÂ§áÈáåÁöÑECCTestAppÂ∫îÁî®‰∏ãËøõË°åÁî®Êà∑PINÁ†ÅËÆ§ËØÅ
     rv = SKF_VerifyPIN(hApp1, USER_TYPE, "UserPin", &ulRetryTime);
     if (rv != SAR_OK)
     {
@@ -523,7 +523,7 @@ void EccGenerateKeyInterfaceTest()
         return ;
     }
 
-    // ‘⁄…Ë±∏¿ÔµƒECCTestApp”¶”√œ¬¥¥Ω®ECCTestContainer»›∆˜
+    // Âú®ËÆæÂ§áÈáåÁöÑECCTestAppÂ∫îÁî®‰∏ãÂàõÂª∫ECCTestContainerÂÆπÂô®
     rv = SKF_CreateContainer(hApp1, "ECCTestContainer", &hContainer1);
     if (rv != SAR_OK)
     {
@@ -533,7 +533,7 @@ void EccGenerateKeyInterfaceTest()
         return ;
     }
 
-    // ‘⁄…Ë±∏¿Ô≤˙…˙ECCπ´ÀΩ‘ø∂‘≤¢ ‰≥ˆπ´‘ø
+    // Âú®ËÆæÂ§áÈáå‰∫ßÁîüECCÂÖ¨ÁßÅÈí•ÂØπÂπ∂ËæìÂá∫ÂÖ¨Èí•
     rv = SKF_GenECCKeyPair(hContainer1, SGD_SM2_1, &tSm2SignPubkeyBlob1);
     if (rv != SAR_OK)
     {
@@ -543,31 +543,31 @@ void EccGenerateKeyInterfaceTest()
         return ;
     }
     memset(SymKeyCiper, 0x00, sizeof(BYTE)*5000);
-    //  π”√…œ ˆ≤˙…˙µƒπ´‘øΩ¯––ECCº”√‹16◊÷Ω⁄ ˝æ›
+    // ‰ΩøÁî®‰∏äËø∞‰∫ßÁîüÁöÑÂÖ¨Èí•ËøõË°åECCÂä†ÂØÜ16Â≠óËäÇÊï∞ÊçÆ
     rv = SKF_ExtECCEncrypt(hDev1,&tSm2SignPubkeyBlob1,SymKey,16,SymKeyCiper);
 
-    // º”√‹SM2ÀΩ‘ø
+    // Âä†ÂØÜSM2ÁßÅÈí•
 
-    // …Ë÷√SM1 ECBƒ£ Ωµƒª·ª∞√‹‘ø
+    // ËÆæÁΩÆSM1 ECBÊ®°ÂºèÁöÑ‰ºöËØùÂØÜÈí•
     rv = SKF_SetSymmKey(hDev1,SymKey,SGD_SM1_ECB,&hKHandle);
     EncParam.IVLen = 0;
     EncParam.PaddingType = 0;
     rv = SKF_EncryptInit(hKHandle,EncParam);
     rv = SKF_Encrypt(hKHandle, prikey_sm2+32, 32, EncData, &EncDataLen);
     SKF_CloseHandle(hKHandle);
-    // ±£¥Êº”√‹π´‘ø
-    tSm2EncryptPubkeyBlob1.BitLen = 256;    
+    // ‰øùÂ≠òÂä†ÂØÜÂÖ¨Èí•
+    tSm2EncryptPubkeyBlob1.BitLen = 256;
     memcpy(tSm2EncryptPubkeyBlob1.XCoordinate,X_sm2,sizeof(X_sm2));
     memcpy(tSm2EncryptPubkeyBlob1.YCoordinate,Y_sm2,sizeof(Y_sm2));
 
-    // ∏≥÷µ–Ë“™µƒΩ·ππÃÂ,µº»Îº”Ω‚√‹√‹‘ø∂‘
+    // ËµãÂÄºÈúÄË¶ÅÁöÑÁªìÊûÑ‰Ωì,ÂØºÂÖ•Âä†Ëß£ÂØÜÂØÜÈí•ÂØπ
     EnvdKeyBlob->ulBits = 256;
     EnvdKeyBlob->ulSymmAlgID = SGD_SM1_ECB;
     EnvdKeyBlob->PubKey = tSm2EncryptPubkeyBlob1;
     memcpy(&(EnvdKeyBlob->ECCCipherBlob), SymKeyCiper, sizeof(ECCCIPHERBLOB) + SymKeyCiper->CipherLen + 1);
     memcpy(EnvdKeyBlob->cbEncryptedPriKey+32, EncData, EncDataLen);
 
-    // µº»ÎECCπ´ÀΩ‘ø∂‘ ±£ª§ÀΩ‘øµƒ√‹‘øÀ„∑® «SM1À„∑®
+    // ÂØºÂÖ•ECCÂÖ¨ÁßÅÈí•ÂØπ ‰øùÊä§ÁßÅÈí•ÁöÑÂØÜÈí•ÁÆóÊ≥ïÊòØSM1ÁÆóÊ≥ï
     rv = SKF_ImportECCKeyPair(hContainer1,EnvdKeyBlob);
     if (rv != SAR_OK)
     {
@@ -576,11 +576,11 @@ void EccGenerateKeyInterfaceTest()
         getchar();
         return ;
     }
-    // ∑¢∆∑Ω…˙≥…ECC–≠…Ã ˝æ›
+    // ÂèëËµ∑ÊñπÁîüÊàêECCÂçèÂïÜÊï∞ÊçÆ
     rv = SKF_GenerateAgreementDataWithECC(hContainer1, SGD_SM1_ECB, &tSm2TmpPubkeyBlob1, (BYTE*)"UserID1", strlen("UserID1"), &hAgreementHandle1);
     if (rv == SAR_NOTSUPPORTYETERR)
     {
-        PrintMsg("WI32U320 ∆ΩÃ®≤ª÷ß≥÷ SKF_GenerateAgreementDataWithECC\n");
+        PrintMsg("WI32U320 Âπ≥Âè∞‰∏çÊîØÊåÅ SKF_GenerateAgreementDataWithECC\n");
     }
     else if (rv != SAR_OK)
     {
@@ -590,11 +590,11 @@ void EccGenerateKeyInterfaceTest()
         return ;
     }
 
-    // œÏ”¶∑Ω≤˙…˙ECC–≠…Ã ˝æ›∫Õª·ª∞√‹‘ø
+    // ÂìçÂ∫îÊñπ‰∫ßÁîüECCÂçèÂïÜÊï∞ÊçÆÂíå‰ºöËØùÂØÜÈí•
     rv = SKF_GenerateAgreementDataAndKeyWithECC(hContainer1, SGD_SM1_ECB, &tSm2EncryptPubkeyBlob1, &tSm2TmpPubkeyBlob1, &tSm2TmpPubkeyBlob2, (BYTE*)"UserID2", strlen("UserID2"), (BYTE*)"UserID1", strlen("UserID1"), &hAgreementKeyHandle2);
     if (rv == SAR_NOTSUPPORTYETERR)
     {
-        PrintMsg("WI32U320 ∆ΩÃ®≤ª÷ß≥÷ SKF_GenerateAgreementDataAndKeyWithECC\n");
+        PrintMsg("WI32U320 Âπ≥Âè∞‰∏çÊîØÊåÅ SKF_GenerateAgreementDataAndKeyWithECC\n");
     }
     else if (rv != SAR_OK)
     {
@@ -603,20 +603,20 @@ void EccGenerateKeyInterfaceTest()
         getchar();
         return ;
     }
-    
+
     rv = SKF_CloseHandle(hAgreementKeyHandle2);
 
-    // ∑¢∆∑Ω…Ë±∏
+    // ÂèëËµ∑ÊñπËÆæÂ§á
     p = uzDevList;
-    // ±£¥Êº”√‹π´‘ø
-    tSm2EncryptPubkeyBlob2.BitLen = 256;    
+    // ‰øùÂ≠òÂä†ÂØÜÂÖ¨Èí•
+    tSm2EncryptPubkeyBlob2.BitLen = 256;
     memcpy(tSm2EncryptPubkeyBlob2.XCoordinate,X_sm2,sizeof(X_sm2));
     memcpy(tSm2EncryptPubkeyBlob2.YCoordinate,Y_sm2,sizeof(Y_sm2));
-    // ∑¢∆∑Ω≤˙…˙ª·ª∞√‹‘ø
+    // ÂèëËµ∑Êñπ‰∫ßÁîü‰ºöËØùÂØÜÈí•
     rv = SKF_GenerateKeyWithECC(hAgreementHandle1, &tSm2EncryptPubkeyBlob2, &tSm2TmpPubkeyBlob2, (BYTE*)"UserID2", strlen("UserID2"), &hAgreementKeyHandle1);
     if (rv == SAR_NOTSUPPORTYETERR)
     {
-        PrintMsg("WI32U320 ∆ΩÃ®≤ª÷ß≥÷ SKF_GenerateKeyWithECC\n");
+        PrintMsg("WI32U320 Âπ≥Âè∞‰∏çÊîØÊåÅ SKF_GenerateKeyWithECC\n");
     }
     else if (rv != SAR_OK)
     {

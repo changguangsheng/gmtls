@@ -9,211 +9,211 @@ void PrintMsg( char *fmt, ... );
 
 void dev_skf_expand_interafce_test()
 {
-	HAPPLICATION hApp = NULL;
-	HCONTAINER hContainer = NULL;
-	ULONG ulRetryTime = 0;
-	ULONG rv = 0;
-	CHAR SN[32] = {0};
-	BYTE bFirmwareVer[37] = {0};
-	BYTE byExtEncPlain[128] = {0};
-	ULONG ulPlainDataLen = 0;
-	BYTE bPlainData[20] = {0};
-	ULONG ulFirmwareVerLen = 0;
-	DEVINFO devInfo;
-	ECCPUBLICKEYBLOB *pub_sm2 = (PECCPUBLICKEYBLOB)malloc(sizeof(ECCPUBLICKEYBLOB)*2);
-	ECCPRIVATEKEYBLOB *pri_sm2 = (PECCPRIVATEKEYBLOB)malloc(sizeof(ECCPRIVATEKEYBLOB)*2);
-	ULONG AlgId = SGD_SM2_1;
-	ECCPUBLICKEYBLOB *pubBlob = (PECCPUBLICKEYBLOB)malloc(sizeof(ECCPUBLICKEYBLOB)*2);	
-	ECCCIPHERBLOB *eccData = (PECCCIPHERBLOB)malloc(sizeof(ECCCIPHERBLOB)*2);
-	ECCCIPHERBLOB *OutEccData = (PECCCIPHERBLOB)malloc(sizeof(ECCCIPHERBLOB)*2);
+    HAPPLICATION hApp = NULL;
+    HCONTAINER hContainer = NULL;
+    ULONG ulRetryTime = 0;
+    ULONG rv = 0;
+    CHAR SN[32] = {0};
+    BYTE bFirmwareVer[37] = {0};
+    BYTE byExtEncPlain[128] = {0};
+    ULONG ulPlainDataLen = 0;
+    BYTE bPlainData[20] = {0};
+    ULONG ulFirmwareVerLen = 0;
+    DEVINFO devInfo;
+    ECCPUBLICKEYBLOB *pub_sm2 = (PECCPUBLICKEYBLOB)malloc(sizeof(ECCPUBLICKEYBLOB)*2);
+    ECCPRIVATEKEYBLOB *pri_sm2 = (PECCPRIVATEKEYBLOB)malloc(sizeof(ECCPRIVATEKEYBLOB)*2);
+    ULONG AlgId = SGD_SM2_1;
+    ECCPUBLICKEYBLOB *pubBlob = (PECCPUBLICKEYBLOB)malloc(sizeof(ECCPUBLICKEYBLOB)*2);
+    ECCCIPHERBLOB *eccData = (PECCCIPHERBLOB)malloc(sizeof(ECCCIPHERBLOB)*2);
+    ECCCIPHERBLOB *OutEccData = (PECCCIPHERBLOB)malloc(sizeof(ECCCIPHERBLOB)*2);
 
-	BYTE* bFirmwareData = NULL;
+    BYTE* bFirmwareData = NULL;
 
-	UINT nFirmwareDataLen = 0;
+    UINT nFirmwareDataLen = 0;
 
-	char szFirmWarePath[260] = {0};
+    char szFirmWarePath[260] = {0};
 	
-	// ÉèÖÃ×Ö½ÚSNºÅ
-	memcpy(SN,"djwhfdjshfjs",strlen("djwhfdjshfjs"));
-	rv = SKFE_SetSN(hDev,SN,strlen(SN));
-	if (rv == SAR_NOTSUPPORTYETERR)
-	{
-		PrintMsg("SKFE_SetSN A12SÆ½Ì¨²»Ö§³Ö\n");
-	}
-	else if (rv != SAR_OK)
-	{
-		PrintMsg("SKFE_SetSN Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	else
-	{
-		PrintMsg("SKFE_SetSN OK\n");
-	}
+    // è®¾ç½®å­—èŠ‚SNå·
+    memcpy(SN,"djwhfdjshfjs",strlen("djwhfdjshfjs"));
+    rv = SKFE_SetSN(hDev,SN,strlen(SN));
+    if (rv == SAR_NOTSUPPORTYETERR)
+    {
+        PrintMsg("SKFE_SetSN A12Så¹³å°ä¸æ”¯æŒ\n");
+    }
+    else if (rv != SAR_OK)
+    {
+        PrintMsg("SKFE_SetSN Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    else
+    {
+        PrintMsg("SKFE_SetSN OK\n");
+    }
 
-	rv  = SKF_GetDevInfo(hDev, &devInfo);
-	if (rv != SAR_OK)
-	{
-		
-		fflush(stdin);
-		getchar();
-	}
-	
-	// »Ö¸´µ½¹¤³§Âë
-	rv = SKFE_SetSN(hDev,"",sizeof(""));
-	if (rv == SAR_NOTSUPPORTYETERR)
-	{
-		PrintMsg("SKFE_SetSN A12SÆ½Ì¨²»Ö§³Ö\n");
-	}
-	else if (rv != SAR_OK)
-	{
-		PrintMsg("SKFE_SetSN »Ö¸´µ½¹¤³§ÂëWrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	else
-	{
-		PrintMsg("SKFE_SetSN »Ö¸´µ½¹¤³§ÂëOK\n");
-	}
+    rv  = SKF_GetDevInfo(hDev, &devInfo);
+    if (rv != SAR_OK)
+    {
+
+        fflush(stdin);
+        getchar();
+    }
+
+    // æ¢å¤åˆ°å·¥å‚ç 
+    rv = SKFE_SetSN(hDev,"",sizeof(""));
+    if (rv == SAR_NOTSUPPORTYETERR)
+    {
+        PrintMsg("SKFE_SetSN A12Så¹³å°ä¸æ”¯æŒ\n");
+    }
+    else if (rv != SAR_OK)
+    {
+        PrintMsg("SKFE_SetSN æ¢å¤åˆ°å·¥å‚ç Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    else
+    {
+        PrintMsg("SKFE_SetSN æ¢å¤åˆ°å·¥å‚ç OK\n");
+    }
 
 
-	// Çå³ıÉè±¸ÀïµÄËùÓĞÓ¦ÓÃ
-	clear_dev_app();
-	// ´´½¨ECCTestAppÓ¦ÓÃ
-	rv = SKF_CreateApplication(hDev, "ECCTestApp", "AdminPin", 5, "UserPin", 3, SECURE_ANYONE_ACCOUNT, &hApp);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_CreateApplication Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	// ÓÃ»§PinÂëÈÏÖ¤
-	rv = SKF_VerifyPIN(hApp, USER_TYPE, "UserPin", &ulRetryTime);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_VerifyPIN Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	// ´´½¨ECCTestContainerÈİÆ÷
-	rv = SKF_CreateContainer(hApp, "ECCTestContainer", &hContainer);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_CreateContainer Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	// Éú³ÉÍâ²¿ECC¹«Ë½Ô¿¶Ô£¬²¢Êä³ö
-	rv = SKFE_GenExtECCKey(hDev, pri_sm2, pub_sm2);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKFE_GenExtECCKey Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	else
-	{
-		PrintMsg("SKFE_GenExtECCKey OK\n");
-	}
-	// Éú³ÉÄÚ²¿¹«Ë½Ô¿¶Ô
-	rv = SKF_GenECCKeyPair(hContainer,AlgId,pubBlob);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_GenECCKeyPair Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
+    // æ¸…é™¤è®¾å¤‡é‡Œçš„æ‰€æœ‰åº”ç”¨
+    clear_dev_app();
+    // åˆ›å»ºECCTestAppåº”ç”¨
+    rv = SKF_CreateApplication(hDev, "ECCTestApp", "AdminPin", 5, "UserPin", 3, SECURE_ANYONE_ACCOUNT, &hApp);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_CreateApplication Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    // ç”¨æˆ·Pinç è®¤è¯
+    rv = SKF_VerifyPIN(hApp, USER_TYPE, "UserPin", &ulRetryTime);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_VerifyPIN Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    // åˆ›å»ºECCTestContainerå®¹å™¨
+    rv = SKF_CreateContainer(hApp, "ECCTestContainer", &hContainer);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_CreateContainer Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    // ç”Ÿæˆå¤–éƒ¨ECCå…¬ç§é’¥å¯¹ï¼Œå¹¶è¾“å‡º
+    rv = SKFE_GenExtECCKey(hDev, pri_sm2, pub_sm2);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKFE_GenExtECCKey Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    else
+    {
+        PrintMsg("SKFE_GenExtECCKey OK\n");
+    }
+    // ç”Ÿæˆå†…éƒ¨å…¬ç§é’¥å¯¹
+    rv = SKF_GenECCKeyPair(hContainer,AlgId,pubBlob);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_GenECCKeyPair Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
 #if 0
-	// dwq 20181017
-	// Íâ²¿¹«Ô¿¼ÓÃÜ
-	rv = SKF_ExtECCEncrypt(hDev,pubBlob,byExtEncPlain,0x10,eccData);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ExtECCEncrypt Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	// »ñÈ¡ÄÚ²¿Ç©ÃûË½Ô¿½âÃÜºóÊı¾İ³¤¶È
-	rv = SKFE_ECCDecryptSignKey(hContainer,eccData,NULL,&ulPlainDataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKFE_ECCDecryptSignKey Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	// »ñÈ¡ÄÚ²¿Ç©ÃûË½Ô¿½âÃÜ
-	rv = SKFE_ECCDecryptSignKey(hContainer,eccData,bPlainData,&ulPlainDataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKFE_ECCDecryptSignKey Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	else
-	{
-		PrintMsg("SKFE_ECCDecryptSignKey OK\n");
-	}
+    // dwq 20181017
+    // å¤–éƒ¨å…¬é’¥åŠ å¯†
+    rv = SKF_ExtECCEncrypt(hDev,pubBlob,byExtEncPlain,0x10,eccData);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ExtECCEncrypt Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    // è·å–å†…éƒ¨ç­¾åç§é’¥è§£å¯†åæ•°æ®é•¿åº¦
+    rv = SKFE_ECCDecryptSignKey(hContainer,eccData,NULL,&ulPlainDataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKFE_ECCDecryptSignKey Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    // è·å–å†…éƒ¨ç­¾åç§é’¥è§£å¯†
+    rv = SKFE_ECCDecryptSignKey(hContainer,eccData,bPlainData,&ulPlainDataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKFE_ECCDecryptSignKey Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    else
+    {
+        PrintMsg("SKFE_ECCDecryptSignKey OK\n");
+    }
 #endif
 
-	// Ã÷ÎÄµ¼ÈëECC¹«Ë½Ô¿¶Ô
-	rv = SKF_ImportPlainECCKeyPair(hContainer,pri_sm2, pub_sm2,1);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ImportPlainECCKeyPair Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	else
-	{
-		PrintMsg("SKF_ImportPlainECCKeyPair OK\n");
-	}
-	memset(byExtEncPlain, 0x33, 0x10);
-	// Íâ²¿¹«Ô¿¼ÓÃÜ
-	rv = SKF_ExtECCEncrypt(hDev,pub_sm2,byExtEncPlain,0x10,eccData);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ExtECCEncrypt Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	// Êı×ÖĞÅ·â×ª»»
-	rv = SKFE_ECCDigitalEnvelopTransform(hDev,hContainer,eccData,pub_sm2,OutEccData);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKFE_ECCDigitalEnvelopTransform Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	else
-	{
-		PrintMsg("SKFE_ECCDigitalEnvelopTransform OK\n");
-	}
+    // æ˜æ–‡å¯¼å…¥ECCå…¬ç§é’¥å¯¹
+    rv = SKF_ImportPlainECCKeyPair(hContainer,pri_sm2, pub_sm2,1);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ImportPlainECCKeyPair Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    else
+    {
+        PrintMsg("SKF_ImportPlainECCKeyPair OK\n");
+    }
+    memset(byExtEncPlain, 0x33, 0x10);
+    // å¤–éƒ¨å…¬é’¥åŠ å¯†
+    rv = SKF_ExtECCEncrypt(hDev,pub_sm2,byExtEncPlain,0x10,eccData);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ExtECCEncrypt Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    // æ•°å­—ä¿¡å°è½¬æ¢
+    rv = SKFE_ECCDigitalEnvelopTransform(hDev,hContainer,eccData,pub_sm2,OutEccData);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKFE_ECCDigitalEnvelopTransform Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    else
+    {
+        PrintMsg("SKFE_ECCDigitalEnvelopTransform OK\n");
+    }
 
-	// »ñÈ¡ÄÚ²¿Ë½Ô¿½âÃÜºóÊı¾İ³¤¶È
-	rv = SKF_ECCDecrypt(hContainer,OutEccData,NULL,&ulPlainDataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ECCDecrypt Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	// »ñÈ¡ÄÚ²¿Ë½Ô¿½âÃÜ
-	rv = SKF_ECCDecrypt(hContainer,OutEccData,bPlainData,&ulPlainDataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ECCDecrypt Wrong\n");
-		fflush(stdin);
-		getchar();
-	}
-	else
-	{
-		PrintMsg("SKF_ECCDecrypt OK\n");
-	}
+    // è·å–å†…éƒ¨ç§é’¥è§£å¯†åæ•°æ®é•¿åº¦
+    rv = SKF_ECCDecrypt(hContainer,OutEccData,NULL,&ulPlainDataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ECCDecrypt Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    // è·å–å†…éƒ¨ç§é’¥è§£å¯†
+    rv = SKF_ECCDecrypt(hContainer,OutEccData,bPlainData,&ulPlainDataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ECCDecrypt Wrong\n");
+        fflush(stdin);
+        getchar();
+    }
+    else
+    {
+        PrintMsg("SKF_ECCDecrypt OK\n");
+    }
 
-	free(pub_sm2);
-	free(pri_sm2);
-	free(pubBlob);
-	free(eccData);
-	free(OutEccData);
-	return;
+    free(pub_sm2);
+    free(pri_sm2);
+    free(pubBlob);
+    free(eccData);
+    free(OutEccData);
+    return;
 }

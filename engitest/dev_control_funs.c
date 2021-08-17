@@ -1,5 +1,5 @@
 
-/* Éè±¸·ÃÎÊ¿ØÖÆ½Ó¿Ú */
+/* è®¾å¤‡è®¿é—®æ§åˆ¶æ¥å£ */
 
 
 #include <stdio.h>
@@ -11,134 +11,135 @@
 
 void dev_control_funs_test()
 {
-	ULONG rv = 0;
-	HAPPLICATION hApp = NULL;
-	DEVINFO devInfo;
-	HCONTAINER hCon = NULL; 
-	HANDLE hKey = NULL;
-	BLOCKCIPHERPARAM EncryptParam;
-	BYTE bAuthKey[16] = {0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38};
-	BYTE bRandom[16] = {0}, bAuthData[16] = {0};
-	ULONG ulAuthDataLen = 16, ulRandomLen = 16 ;
-	BYTE bNewAuthKey[16] = {0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38};
-	ULONG ulNewAuthKeyLen = 16;
-	ULONG RetryCounter = 0;
-	
-	// Éè±¸ÈÏÖ¤
-	// ÈÏÖ¤Á÷³Ì: 
-	/* 1.±»ÈÏÖ¤·½ µ÷ÓÃSKF_GenRandom´ÓÉè±¸»ñÈ¡ulRandomLen(ÈÏÖ¤Ëã·¨Ò»¸ö·Ö×éµÄ³¤¶È)µÄËæ»úÊıbRandom
-	   2.±»ÈÏÖ¤·½ Ê¹ÓÃ×Ô¼ºµÄÈÏÖ¤ÃÜÔ¿¡¢Éè±¸ÈÏÖ¤Ëã·¨ ¶ÔbRandom¼ÓÃÜ£¬µÃµ½ÈÏÖ¤Êı¾İbAuthData
-	   3.±»ÈÏÖ¤·½ µ÷ÓÃSKF_DevAuth()½«ÈÏÖ¤Êı¾İbAuthData·¢µ½Éè±¸
-	   4.Éè±¸ Ê¹ÓÃ¿¨ÄÚ´æ´¢µÄÉè±¸ÈÏÖ¤ÃÜÔ¿¡¢Éè±¸ÈÏÖ¤Ëã·¨ ¶ÔÈÏÖ¤Êı¾İbAuthData½âÃÜÊı¾İD1
-	   5.Éè±¸ ½«½âÃÜÊı¾İD1ºÍSKF_GenRandomÊ±²úÉúµÄËæ»úÊı ¶Ô±È, Ò»ÖÂÈÏÖ¤Í¨¹ı,·ñÔòÈÏÖ¤Ê§°Ü
+    ULONG rv = 0;
+    HAPPLICATION hApp = NULL;
+    DEVINFO devInfo;
+    HCONTAINER hCon = NULL;
+    HANDLE hKey = NULL;
+    BLOCKCIPHERPARAM EncryptParam;
+    BYTE bAuthKey[16] = {0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38};
+    BYTE bRandom[16] = {0}, bAuthData[16] = {0};
+    ULONG ulAuthDataLen = 16, ulRandomLen = 16 ;
+    BYTE bNewAuthKey[16] = {0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38};
+    ULONG ulNewAuthKeyLen = 16;
+    ULONG RetryCounter = 0;
+
+    // è®¾å¤‡è®¤è¯
+    // è®¤è¯æµç¨‹:
+    /* 1.è¢«è®¤è¯æ–¹ è°ƒç”¨SKF_GenRandomä»è®¾å¤‡è·å–ulRandomLen(è®¤è¯ç®—æ³•ä¸€ä¸ªåˆ†ç»„çš„é•¿åº¦)çš„éšæœºæ•°bRandom
+	   2.è¢«è®¤è¯æ–¹ ä½¿ç”¨è‡ªå·±çš„è®¤è¯å¯†é’¥ã€è®¾å¤‡è®¤è¯ç®—æ³• å¯¹bRandomåŠ å¯†ï¼Œå¾—åˆ°è®¤è¯æ•°æ®bAuthData
+	   3.è¢«è®¤è¯æ–¹ è°ƒç”¨SKF_DevAuth()å°†è®¤è¯æ•°æ®bAuthDataå‘åˆ°è®¾å¤‡
+	   4.è®¾å¤‡ ä½¿ç”¨å¡å†…å­˜å‚¨çš„è®¾å¤‡è®¤è¯å¯†é’¥ã€è®¾å¤‡è®¤è¯ç®—æ³• å¯¹è®¤è¯æ•°æ®bAuthDataè§£å¯†æ•°æ®D1
+	   5.è®¾å¤‡ å°†è§£å¯†æ•°æ®D1å’ŒSKF_GenRandomæ—¶äº§ç”Ÿçš„éšæœºæ•° å¯¹æ¯”, ä¸€è‡´è®¤è¯é€šè¿‡,å¦åˆ™è®¤è¯å¤±è´¥
 	*/
-	//==>  ÒÔÏÂÄ£Äâ ±»ÈÏÖ¤·½Ê¹ÓÃÈÏÖ¤ÃÜÔ¿¡¢Éè±¸ÈÏÖ¤Ëã·¨ ¶ÔbRandom¼ÓÃÜ »ñÈ¡ÈÏÖ¤Êı¾İbAuthData¹ı³Ì
+    //==>  ä»¥ä¸‹æ¨¡æ‹Ÿ è¢«è®¤è¯æ–¹ä½¿ç”¨è®¤è¯å¯†é’¥ã€è®¾å¤‡è®¤è¯ç®—æ³• å¯¹bRandomåŠ å¯† è·å–è®¤è¯æ•°æ®bAuthDataè¿‡ç¨‹
 
-	
 
-	memset(&devInfo,0, sizeof(DEVINFO));
-	rv = SKF_GetDevInfo(hDev, &devInfo);
-	rv = SKF_GenRandom(hDev, bRandom, ulRandomLen);	
-	//rv = SKF_SetSymmKey(hDev, bAuthKey, devInfo.DevAuthAlgId, &hKey);
-	rv = SKF_SetSymmKey(hDev, bAuthKey, SGD_SMS4_ECB, &hKey);
-	EncryptParam.PaddingType = 0;
-	EncryptParam.IVLen = 0;
-	memset(EncryptParam.IV,0,32);
-	rv = SKF_EncryptInit(hKey, EncryptParam);
-	rv = SKF_Encrypt(hKey, bRandom, ulRandomLen, bAuthData, &ulAuthDataLen);
-	rv = SKF_CloseHandle(hKey);
-	//<==
-	rv = SKF_DevAuth(hDev, bAuthData, ulAuthDataLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_DevAuth Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_DevAuth OK\n");
-	clear_dev_app();
-	// ĞŞ¸ÄÉè±¸ÈÏÖ¤ÃÜÔ¿
-	// Ö»ÓĞÔÚÉè±¸ÈÏÖ¤Í¨¹ıºó²Å¿ÉÒÔ×öÉè±¸ÈÏÖ¤ÃÜÔ¿µÄĞŞ¸Ä
-	// bNewAuthKeyÎªĞÂÈÏÖ¤ÃÜÔ¿,ulNewAuthKeyLenÎªĞÂÈÏÖ¤ÃÜÔ¿³¤¶È, ĞÂÈÏÖ¤ÃÜÔ¿³¤¶È±ØĞëÓëÔ­ÈÏÖ¤ÃÜÔ¿³¤¶ÈÒ»ÖÂ
-	rv = SKF_ChangeDevAuthKey(hDev, bNewAuthKey, ulNewAuthKeyLen);
-	if (rv != SAR_OK)
-	{
-		PrintMsg("SKF_ChangeDevAuthKey Wrong\n");
-		fflush(stdin);
-		getchar();
-		return ;
-	}
-	PrintMsg("SKF_ChangeDevAuthKey OK\n");
-	SKF_DeleteApplication(hDev, "Test_Application");
-	rv = SKF_CreateApplication(hDev, "Test_Application", "111111", 3, "111111", 3, SECURE_ANYONE_ACCOUNT, &hApp);
-	if (rv == SAR_OK)
-	{
+
+    memset(&devInfo,0, sizeof(DEVINFO));
+    rv = SKF_GetDevInfo(hDev, &devInfo);
+    rv = SKF_GenRandom(hDev, bRandom, ulRandomLen);
+    //rv = SKF_SetSymmKey(hDev, bAuthKey, devInfo.DevAuthAlgId, &hKey);
+    rv = SKF_SetSymmKey(hDev, bAuthKey, SGD_SMS4_ECB, &hKey);
+    EncryptParam.PaddingType = 0;
+    EncryptParam.IVLen = 0;
+    memset(EncryptParam.IV,0,32);
+    rv = SKF_EncryptInit(hKey, EncryptParam);
+    rv = SKF_Encrypt(hKey, bRandom, ulRandomLen, bAuthData, &ulAuthDataLen);
+    rv = SKF_CloseHandle(hKey);
+    //<==
+    rv = SKF_DevAuth(hDev, bAuthData, ulAuthDataLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_DevAuth Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_DevAuth OK\n");
+    clear_dev_app();
+    // ä¿®æ”¹è®¾å¤‡è®¤è¯å¯†é’¥
+    // åªæœ‰åœ¨è®¾å¤‡è®¤è¯é€šè¿‡åæ‰å¯ä»¥åšè®¾å¤‡è®¤è¯å¯†é’¥çš„ä¿®æ”¹
+    // bNewAuthKeyä¸ºæ–°è®¤è¯å¯†é’¥,ulNewAuthKeyLenä¸ºæ–°è®¤è¯å¯†é’¥é•¿åº¦, æ–°è®¤è¯å¯†é’¥é•¿åº¦å¿…é¡»ä¸åŸè®¤è¯å¯†é’¥é•¿åº¦ä¸€è‡´
+    rv = SKF_ChangeDevAuthKey(hDev, bNewAuthKey, ulNewAuthKeyLen);
+    if (rv != SAR_OK)
+    {
+        PrintMsg("SKF_ChangeDevAuthKey Wrong\n");
+        fflush(stdin);
+        getchar();
+        return ;
+    }
+    PrintMsg("SKF_ChangeDevAuthKey OK\n");
+    SKF_DeleteApplication(hDev, "Test_Application");
+    rv = SKF_CreateApplication(hDev, "Test_Application", "111111", 3, "111111", 3, SECURE_ANYONE_ACCOUNT, &hApp);
+    if (rv == SAR_OK)
+    {
 #if 0
-		/*²âÊÔ´´½¨¶àÓ¦ÓÃ*/
-		rv = SKF_CreateApplication(hDev, "Test_Application2", "111111", 3, "111111", 3, SECURE_ANYONE_ACCOUNT, &hApp);
-		if(SAR_OK != rv)
-		{
-			PrintMsg("SKF_CreateApplication create the second application failed and the error code = %x",rv);
-		}
+        /*æµ‹è¯•åˆ›å»ºå¤šåº”ç”¨*/
+        rv = SKF_CreateApplication(hDev, "Test_Application2", "111111", 3, "111111", 3, SECURE_ANYONE_ACCOUNT, &hApp);
+        if(SAR_OK != rv)
+        {
+            PrintMsg("SKF_CreateApplication create the second application failed and the error code = %x",rv);
+        }
 #endif
-		// Ğ£ÑéPINÂë(µÇÂ¼Ó¦ÓÃ),»ñÈ¡ÏàÓ¦È¨ÏŞ
-		// ´«ÈëPINÀàĞÍUSER_TYPE/ADMIN_TYPE ºÍ¶ÔÓ¦PINÂë, µÇÂ¼Ó¦ÓÃ,»ñÈ¡ÏàÓ¦È¨ÏŞ£¬Ğ£ÑéÊ§°ÜRetryCounter·µ»ØÊ£ÓàĞ£Ñé´ÎÊı
-		rv = SKF_VerifyPIN(hApp, USER_TYPE, "111111", &RetryCounter);
-		if (rv != SAR_OK)
-		{
-			PrintMsg("SKF_VerifyPIN Wrong\n");
-			fflush(stdin);
-			getchar();
-			return ;
-		}
-		PrintMsg("SKF_VerifyPIN OK\n");
+        // æ ¡éªŒPINç (ç™»å½•åº”ç”¨),è·å–ç›¸åº”æƒé™
+        // ä¼ å…¥PINç±»å‹USER_TYPE/ADMIN_TYPE å’Œå¯¹åº”PINç , ç™»å½•åº”ç”¨,è·å–ç›¸åº”æƒé™ï¼Œæ ¡éªŒå¤±è´¥RetryCounterè¿”å›å‰©ä½™æ ¡éªŒæ¬¡æ•°
+        rv = SKF_VerifyPIN(hApp, USER_TYPE, "111111", &RetryCounter);
+        if (rv != SAR_OK)
+        {
+            PrintMsg("SKF_VerifyPIN Wrong\n");
+            fflush(stdin);
+            getchar();
+            return ;
+        }
+        PrintMsg("SKF_VerifyPIN OK\n");
 
-		// ĞŞ¸ÄPIN
-		// Ğ£ÑéPINÍ¨¹ıºó²Å¿ÉÒÔ×öĞŞ¸ÄPIN
-		// ´«ÈëPINÀàĞÍUSER_TYPE/ADMIN_TYPE ¡¢¾ÉPINÂë¡¢ĞŞ¸Ä³ÉµÄĞÂPINÂë,ĞŞ¸ÄÊ§°ÜRetryCounter·µ»ØÊ£Óà´ÎÊı
-		rv = SKF_ChangePIN(hApp, USER_TYPE, "111111", "123456", &RetryCounter);
-		if (rv != SAR_OK)
-		{
-			PrintMsg("SKF_ChangePIN Wrong\n");
-			fflush(stdin);
-			getchar();
-			return ;
-		}
-		PrintMsg("SKF_ChangePIN OK\n");
-		rv = SKF_VerifyPIN(hApp, USER_TYPE, "123456", &RetryCounter);
+        // ä¿®æ”¹PIN
+        // æ ¡éªŒPINé€šè¿‡åæ‰å¯ä»¥åšä¿®æ”¹PIN
+        // ä¼ å…¥PINç±»å‹USER_TYPE/ADMIN_TYPE ã€æ—§PINç ã€ä¿®æ”¹æˆçš„æ–°PINç ,ä¿®æ”¹å¤±è´¥RetryCounterè¿”å›å‰©ä½™æ¬¡æ•°
+        rv = SKF_ChangePIN(hApp, USER_TYPE, "111111", "123456", &RetryCounter);
+        if (rv != SAR_OK)
+        {
+            PrintMsg("SKF_ChangePIN Wrong\n");
+            fflush(stdin);
+            getchar();
+            return ;
+        }
+        PrintMsg("SKF_ChangePIN OK\n");
+        rv = SKF_VerifyPIN(hApp, USER_TYPE, "123456", &RetryCounter);
 
-		// ´íÎóĞ£ÑéPINÖÁRetryCounter = 0  PINËø¶¨
-		rv = SKF_VerifyPIN(hApp, USER_TYPE, "666666", &RetryCounter);
-		rv = SKF_VerifyPIN(hApp, USER_TYPE, "666666", &RetryCounter);
-		rv = SKF_VerifyPIN(hApp, USER_TYPE, "666666", &RetryCounter);
-		// ½âËøPIN
-		// PINËø¶¨ºó,Ê¹ÓÃ¹ÜÀíÔ±PIN ["111111"], ½âËø²¢ÉèÖÃÓÃ»§ĞÂPIN["654321"],½âËøÊ§°ÜRetryCounter·µ»Ø¹ÜÀíÔ±¿É²Ù×÷Ê£Óà´ÎÊı
-		rv = SKF_UnblockPIN(hApp,"111111", "654321", &RetryCounter);
-		if (rv != SAR_OK)
-		{
-			PrintMsg("SKF_UnblockPIN Wrong\n");
-			fflush(stdin);
-			getchar();
-			return ;
-		}
-		PrintMsg("SKF_UnblockPIN OK\n");
-		rv = SKF_VerifyPIN(hApp, USER_TYPE, "654321", &RetryCounter);	//½âËø³É¹¦ºó»áĞ£ÑéÍ¨¹ı
+        // é”™è¯¯æ ¡éªŒPINè‡³RetryCounter = 0  PINé”å®š
+        rv = SKF_VerifyPIN(hApp, USER_TYPE, "666666", &RetryCounter);
+        rv = SKF_VerifyPIN(hApp, USER_TYPE, "666666", &RetryCounter);
+        rv = SKF_VerifyPIN(hApp, USER_TYPE, "666666", &RetryCounter);
+        // è§£é”PIN
+        // PINé”å®šå,ä½¿ç”¨ç®¡ç†å‘˜PIN ["111111"], è§£é”å¹¶è®¾ç½®ç”¨æˆ·æ–°PIN["654321"],è§£é”å¤±è´¥RetryCounterè¿”å›ç®¡ç†å‘˜å¯æ“ä½œå‰©ä½™æ¬¡æ•°
+        rv = SKF_UnblockPIN(hApp,"111111", "654321", &RetryCounter);
+        if (rv != SAR_OK)
+        {
+            PrintMsg("SKF_UnblockPIN Wrong\n");
+            fflush(stdin);
+            getchar();
+            return ;
+        }
+        PrintMsg("SKF_UnblockPIN OK\n");
+        rv = SKF_VerifyPIN(hApp, USER_TYPE, "654321", &RetryCounter);	//è§£é”æˆåŠŸåä¼šæ ¡éªŒé€šè¿‡
 
-		// Çå³ıÓ¦ÓÃ°²È«×´Ì¬
-		// Çå³şÓ¦ÓÃ°²È«×´Ì¬ºó,Ó¦ÓÃ´¦ÓÚÎŞµÇÂ¼×´Ì¬
-		rv = SKF_ClearSecureState(hApp);
-		if (rv != SAR_OK)
-		{
-			PrintMsg("SKF_ClearSecureState Wrong\n");
-			fflush(stdin);
-			getchar();
-			return ;
-		}
-		PrintMsg("SKF_ClearSecureState OK\n",rv);
-		// ´ËÊ±,SKF_CreateContainer»á·µ»ØÓÃ»§Ã»ÓĞµÇÂ½0x0A00002D
-		rv = SKF_CreateContainer(hApp, "TestContainer", &hCon);	
-		rv = SKF_CloseApplication(hApp);
-		rv = SKF_DeleteApplication(hDev, "Test_Application");
-	}
+        // æ¸…é™¤åº”ç”¨å®‰å…¨çŠ¶æ€
+        // æ¸…æ¥šåº”ç”¨å®‰å…¨çŠ¶æ€å,åº”ç”¨å¤„äºæ— ç™»å½•çŠ¶æ€
+        rv = SKF_ClearSecureState(hApp);
+        if (rv != SAR_OK)
+        {
+            PrintMsg("SKF_ClearSecureState Wrong\n");
+            fflush(stdin);
+            getchar();
+            return ;
+        }
+        PrintMsg("SKF_ClearSecureState OK\n",rv);
+        // æ­¤æ—¶,SKF_CreateContainerä¼šè¿”å›ç”¨æˆ·æ²¡æœ‰ç™»é™†0x0A00002D
+        rv = SKF_CreateContainer(hApp, "TestContainer", &hCon);
+        rv = SKF_CloseApplication(hApp);
+        rv = SKF_DeleteApplication(hDev, "Test_Application");
+    }
+
 }
