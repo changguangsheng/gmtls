@@ -34,7 +34,7 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#define CA_CERT_FILE 		"CA.pem"
+//#define CA_CERT_FILE 		"CA.pem"
 #define BACKLOG 15	//最大监听数
 #define FREE(x) if(x){free(x);x=NULL;}
 #define BLOCKSIZE 65536
@@ -55,6 +55,7 @@ int num = 0; //线程数
 char *addr ;
 int portc ;
 char *uri;
+char *cafile;
 char *sigCrt;
 char *sigKey;
 char *encCrt;
@@ -98,7 +99,7 @@ int config_ssl_stc(SSL_CTX *ctx){
     SSL_CTX_set_cipher_list(ctx, "SM2-WITH-SMS4-SM3");
 //    在上下文中设置标志以要求对等（服务器）证书验证
     SSL_CTX_set_verify(ctx , SSL_VERIFY_PEER ,NULL);
-    int ret = SSL_CTX_load_verify_locations(ctx , CA_CERT_FILE, NULL);
+    int ret = SSL_CTX_load_verify_locations(ctx , cafile, NULL);
     if(ret < 0){
         printf("SSL_CTX_load_verify_locations failed.");
     }
@@ -494,11 +495,11 @@ int main(int argc, char *argv[]){
     signal(SIGPIPE , SIG_IGN);//防止有连接broken pipe导致程序退出
 
     //服务端监听端口
-    char *addr = argv[1];
-    int ports1 = atoi(argv[2]);
+    int ports1 = atoi(argv[1]);
     //转发服务器的地址 和 端口
     addr = argv[2];
-    portc = atoi(argv[4]);
+    portc = atoi(argv[3]);
+    cafile = argv[4];
     sigCrt = argv[5];
     sigKey = argv[6];
     encCrt = argv[7];
