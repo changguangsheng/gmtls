@@ -414,7 +414,7 @@ void *deal(void* args){
 
 int main(int argc, char *argv[]){
     //获取地址信息
-    if (argc < 4) {
+    if (argc < 9) {
         printf("./%s ports addr portc\n", argv[0]);
         exit(1);
     }
@@ -429,11 +429,11 @@ int main(int argc, char *argv[]){
     //转发服务器的地址 和 端口
     addr = argv[2];
     portc = strtol(argv[3], NULL, 0);
-    ca_file = argv[5];
-    sigCrt = argv[6];
-    sigKey = argv[7];
-    encCrt = argv[8];
-    encKey = argv[9];
+    ca_file = argv[4];
+    sigCrt = argv[5];
+    sigKey = argv[6];
+    encCrt = argv[7];
+    encKey = argv[8];
 
 //    创建ssl
     int localfd  = ssl_init(ports);
